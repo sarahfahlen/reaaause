@@ -1,17 +1,26 @@
 using reaause.Services.Login;
 using shared;
+using static reaause.Services.Login.LoginServiceClientSite;
 namespace reaause.Services.Advertisment;
 
 public class AdvertisementServiceMock : IAdvertisementService
 {
     public static Advertisement test1 = new Advertisement
     {
-        Name = "Nice lamp", Category = "Furniture", Price = 250, AtSchool = false, Status = "active"
+        Name = "Nice lamp", Category = "Furniture", Price = 250, AtSchool = false, Status = "active", Seller = new Seller{
+            UserId = rip.Id,
+            Name = rip.Name,
+            Email = rip.Email
+        }
     };
 
     public static Advertisement test2 = new Advertisement
     {
-        Name = "Long skirt", Category = "Clothes", Price = 100, AtSchool = false, Status = "active"
+        Name = "Long skirt", Category = "Clothes", Price = 100, AtSchool = false, Status = "active", Seller = new Seller{
+            UserId = rap.Id,
+            Name = rap.Name,
+            Email = rap.Email
+        }
     };
     
     //we create a mock list including the mock items from above
