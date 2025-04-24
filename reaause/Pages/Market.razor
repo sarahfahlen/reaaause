@@ -1,6 +1,8 @@
 @using reaause.Services.Advertisment
 @using shared;
+@inject NavigationManager navManager
 @inject IAdvertisementService aService
+@inject ILoginService lService
 @page "/market"
 
 <h3>Market</h3>
@@ -33,9 +35,16 @@
 
 @code {
     private List<Advertisement> ads = new();
+    private User? loggedIn;
 
     protected override async Task OnInitializedAsync()
     {
+        loggedIn = await lService.GetUserLoggedIn();
+        if (loggedIn == null)
+        {
+            navManager.NavigateTo("login/market");
+            return;
+        }
         await GetAllActive();
     }
 
