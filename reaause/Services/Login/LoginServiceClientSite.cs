@@ -38,7 +38,7 @@ public class LoginServiceClientSite : ILoginService
         }
 
         return false;
-    }
+    } 
 
     public static List<User> users = new List<User> { rip, rap, rup };
 

@@ -14,4 +14,4 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<ILoginService, LoginServiceClientSite>();
 
-await builder.Build().RunAsync();
+await builder.Build().RunAsync(); 
