@@ -8,33 +8,28 @@ namespace backend.Controllers
     [Route("api/users")]
     public class LoginController : ControllerBase
     {
-        private readonly LoginRepositoryMongoDB loginRepo;
+        private readonly ILoginRepository loginRepo;
 
-        public LoginController(LoginRepositoryMongoDB loginRepo)
+        public LoginController(ILoginRepository loginRepo)
         {
             this.loginRepo = loginRepo;
         }
 
-        [HttpGet]
-        public User[] GetAllUsers()
-        {
-            return loginRepo.GetAllUsers();
-        }
 
         [HttpPost("login")]
-        public ActionResult<User?> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] ILoginRepository.LoginRequest loginRequest)
         {
-            var users = loginRepo.GetAllUsers();
+            if (string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
+                return BadRequest("Missing email or password");
 
-            var user = users.FirstOrDefault(u =>
-                u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase) &&
-                u.Password == request.Password);
+            var user = await loginRepo.Validate(loginRequest.Email, loginRequest.Password);
 
             if (user == null)
-                return Unauthorized();
+                return Unauthorized("Invalid credentials");
 
-            user.Password = "validated";
             return Ok(user);
         }
+
+
     }
 }

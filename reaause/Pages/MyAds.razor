@@ -40,7 +40,7 @@
         loggedIn = await lService.GetUserLoggedIn();
         if (loggedIn == null)
         {
-            navManager.NavigateTo("login/market");
+            navManager.NavigateTo("login/myads");
             return;
         }
         await GetMyAds();

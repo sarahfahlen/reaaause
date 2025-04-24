@@ -50,5 +50,14 @@ namespace backend.Repository
             var nofilter = Builders<User>.Filter.Empty;
             return Usercollection.Find(nofilter).ToList().ToArray();
         }
+        public async Task<User?> Validate(string email, string password)
+        {
+            var user = await Usercollection
+                .Find(u => u.Email == email && u.Password == password)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
+
     }
 }

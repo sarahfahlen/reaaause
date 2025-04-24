@@ -1,32 +1,51 @@
+.login-page-background {
+    background-color: #f0e6d2;
+    min-height: 100vh;
+    width: 100vw; /* Brug hele vinduets bredde */
+    margin: 0; /* Fjern margin */
+    padding: 0; /* Fjern padding */
+    position: absolute; /* Sikrer at elementet positioneres i forhold til vinduet */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 /* Centrér loginform og tilføj blød grøn baggrund */
 .login-container {
-    max-width: 400px;
+    max-width: 350px; /* Reduceret bredde */
     margin: 4rem auto;
     background-color: #eaf5ef;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 /* Overskrift */
 h3 {
     text-align: center;
     color: #3A725E;
     margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 /* Label stil */
 label {
     font-weight: 600;
     color: #3A725E;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 /* Input felt */
 .form-control {
-    border-radius: 6px;
+    border-radius: 10px;
     border: 1px solid #cddcd3;
     padding: 0.5rem 0.75rem;
     transition: border-color 0.2s ease-in-out;
+    max-width: 100%;
+    margin-bottom: 1rem;
 }
 
 .form-control:focus {
@@ -42,14 +61,21 @@ label {
     color: white;
     font-weight: 600;
     padding: 0.5rem 1rem;
-    border-radius: 6px;
+    border-radius: 10px;
     width: 100%;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
 }
 
 .btn-primary:hover {
     background-color: #3d6453;
     border-color: #3d6453;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 /* Fejltekst */
