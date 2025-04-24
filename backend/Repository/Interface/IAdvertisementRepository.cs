@@ -1,6 +1,8 @@
+using shared;
+
 namespace backend.Repository;
 
-public class IAdvertisementRepository
+public interface IAdvertisementRepository
 {
     
 }
