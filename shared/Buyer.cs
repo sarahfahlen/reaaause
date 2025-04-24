@@ -1,0 +1,12 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+namespace shared;
+
+public class Buyer
+{
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string UserId { get; set; }
+
+    public string Name { get; set; }
+    public string Email { get; set; }
+}

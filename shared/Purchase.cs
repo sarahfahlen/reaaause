@@ -10,5 +10,7 @@ public class Purchase
     public string Name { get; set; }
     public string OpeningHours { get; set; }
 
+    public Buyer Buyer { get; set; }
+    
     public User StaffMember { get; set; }
 }

@@ -16,6 +16,8 @@ public class Advertisement
     public string? Condition { get; set; }
     public bool AtSchool { get; set; }
     public string Status { get; set; }
+    
+    public Seller Seller { get; set; }
 
     public Facility? Location { get; set; }
     public List<Purchase>? PurchaseRequests { get; set; } = new();
