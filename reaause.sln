@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reaause", "reaause\reaause.csproj", "{6DB99FBA-6230-4AB7-A87A-360168F48895}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{E019E1DD-544B-4CA5-89E4-695238D4B2DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{7D366F18-F035-4E83-A15F-6AFDF3255664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shared", "shared\shared.csproj", "{A30542BB-A40A-4C08-BE2E-3756E678A1A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +16,13 @@ Global
 		{6DB99FBA-6230-4AB7-A87A-360168F48895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DB99FBA-6230-4AB7-A87A-360168F48895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DB99FBA-6230-4AB7-A87A-360168F48895}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E019E1DD-544B-4CA5-89E4-695238D4B2DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E019E1DD-544B-4CA5-89E4-695238D4B2DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E019E1DD-544B-4CA5-89E4-695238D4B2DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E019E1DD-544B-4CA5-89E4-695238D4B2DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D366F18-F035-4E83-A15F-6AFDF3255664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D366F18-F035-4E83-A15F-6AFDF3255664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D366F18-F035-4E83-A15F-6AFDF3255664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D366F18-F035-4E83-A15F-6AFDF3255664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30542BB-A40A-4C08-BE2E-3756E678A1A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30542BB-A40A-4C08-BE2E-3756E678A1A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30542BB-A40A-4C08-BE2E-3756E678A1A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30542BB-A40A-4C08-BE2E-3756E678A1A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
