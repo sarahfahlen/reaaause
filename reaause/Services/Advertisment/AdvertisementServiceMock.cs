@@ -1,3 +1,4 @@
+using reaause.Services.Login;
 using shared;
 namespace reaause.Services.Advertisment;
 
@@ -20,5 +21,11 @@ public class AdvertisementServiceMock : IAdvertisementService
     public async Task<List<Advertisement>> GetAllActiveAds()
     {
         return allAds.Where(x => x.Status == "active").ToList();
+    }
+    
+    public Task<User[]> GetAllUsers()
+    {
+        var users = new List<User> { LoginServiceClientSite.rip, LoginServiceClientSite.rap, LoginServiceClientSite.rup };
+        return Task.FromResult(users.ToArray());
     }
 }
