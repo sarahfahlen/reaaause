@@ -1,5 +1,20 @@
+@using shared
+@inject NavigationManager navManager
+@inject ILoginService lService
+@page "/mypurchases"
+
 <h3>MyPurchases</h3>
 
 @code {
+    private User? loggedIn;
     
+    protected override async Task OnInitializedAsync()
+    {
+        loggedIn = await lService.GetUserLoggedIn();
+        if (loggedIn == null)
+        {
+            navManager.NavigateTo("login/mypurchases");
+            return;
+        }
+    }
 }
