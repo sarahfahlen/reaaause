@@ -18,4 +18,6 @@ builder.Services.AddSingleton<IAdvertisementService, AdvertisementServiceMock>()
 
 builder.Services.AddScoped<ILoginService, LoginServiceClientSite>();
 
+builder.Services.AddScoped<IPurchaseService, PurchaseServiceMock>();
+
 await builder.Build().RunAsync();
