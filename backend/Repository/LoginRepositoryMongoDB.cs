@@ -10,7 +10,7 @@ namespace backend.Repository
     public class LoginRepositoryMongoDB : ILoginRepository
     {
         private IMongoClient client;
-        private readonly IMongoCollection<User> Usercollection;
+        private IMongoCollection<User> Usercollection;
      
 
         public LoginRepositoryMongoDB()

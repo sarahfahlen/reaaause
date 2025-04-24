@@ -1,0 +1,61 @@
+/* Centrér loginform og tilføj blød grøn baggrund */
+.login-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    background-color: #eaf5ef;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Overskrift */
+h3 {
+    text-align: center;
+    color: #3A725E;
+    margin-bottom: 1.5rem;
+}
+
+/* Label stil */
+label {
+    font-weight: 600;
+    color: #3A725E;
+}
+
+/* Input felt */
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #cddcd3;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #4E7C68;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(78, 124, 104, 0.2);
+}
+
+/* Login-knap */
+.btn-primary {
+    background-color: #4E7C68;
+    border-color: #4E7C68;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #3d6453;
+    border-color: #3d6453;
+}
+
+/* Fejltekst */
+.text-danger {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 500;
+    color: #b74c4c;
+}

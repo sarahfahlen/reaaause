@@ -22,16 +22,13 @@ namespace backend.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult<User?> Login([FromBody] dynamic body)
+        public ActionResult<User?> Login([FromBody] LoginRequest request)
         {
-            string email = body.Email;
-            string password = body.Password;
-
             var users = loginRepo.GetAllUsers();
 
             var user = users.FirstOrDefault(u =>
-                u.Email.Equals(email, StringComparison.OrdinalIgnoreCase) &&
-                u.Password == password);
+                u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase) &&
+                u.Password == request.Password);
 
             if (user == null)
                 return Unauthorized();
