@@ -1,11 +1,51 @@
 @using shared
 @inject NavigationManager navManager
+@inject IPurchaseService pService
 @inject ILoginService lService
 @page "/mypurchases"
 
 <h3>MyPurchases</h3>
 
+@if (myPurchases.Any())
+{
+    <div class="item-grid">
+        @foreach (var tuple in myPurchases)
+        {
+            var ad = tuple.Item1;
+            var purchase = tuple.Item2;
+
+            <div class="item-card">
+                @if (!string.IsNullOrWhiteSpace(ad.Picture))
+                {
+                    <img src="@ad.Picture" alt="AdPicture" class="item-image" />
+                }
+
+                <div class="item-info">
+                    <p><strong>Name:</strong> @ad.Name</p>
+                    <p><strong>Category:</strong> @ad.Category</p>
+                    <p><strong>Color:</strong> @ad.Color</p>
+                    <p><strong>Price:</strong> @ad.Price DKK</p>
+                    <p><strong>Description:</strong> @ad.Description</p>
+                    <p><strong>Condition:</strong> @ad.Condition</p>
+                    <p><strong>At School:</strong> @(ad.AtSchool ? "Yes" : "No")</p>
+                    <p><strong>Location:</strong> @ad.Location?.Name</p>
+                    <p><strong>Owner:</strong> @ad.Seller?.Name</p>
+
+                    <hr />
+
+                    <p><strong>My Bid:</strong> @purchase.Bid DKK</p>
+                    <p><strong>Purchase Status:</strong> @purchase.Status</p>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>You have no active or pending purchases.</p>
+}
 @code {
+    private List<(Advertisement, Purchase)> myPurchases = new();
     private User? loggedIn;
     
     protected override async Task OnInitializedAsync()
@@ -16,5 +56,7 @@
             navManager.NavigateTo("login/mypurchases");
             return;
         }
+
+        myPurchases = await pService.GetMyPurchase(loggedIn.Id);
     }
 }

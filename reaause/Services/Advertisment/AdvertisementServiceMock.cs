@@ -1,4 +1,3 @@
-using reaause.Services.Login;
 using MongoDB.Bson;
 using shared;
 using static reaause.Services.Login.LoginServiceClientSite;
@@ -81,6 +80,11 @@ public class AdvertisementServiceMock : IAdvertisementService
     // Mock-liste med annoncer
     public List<Advertisement> allAds = new List<Advertisement> { test1, test2 };
 
+    public async Task<List<Advertisement>> GetAllAdvertisements()
+    {
+        return allAds.ToList();
+    }
+    
     public async Task<List<Advertisement>> GetAllActiveAds()
     {
         return allAds.Where(x => x.Status == "active").ToList();
@@ -91,4 +95,12 @@ public class AdvertisementServiceMock : IAdvertisementService
         var users = new List<User> { rip, rap, rup };
         return Task.FromResult(users.ToArray());
     }
+    
+    //Method to find myAds based on the user who is logged in
+    public Task<List<Advertisement>> GetMyAds(string userId)
+    {
+        var myAds = allAds.Where(ad => ad.Seller.UserId == userId).ToList();
+        return Task.FromResult(myAds);
+    }
+
 }

@@ -3,7 +3,7 @@ namespace reaause.Services.Advertisment;
 
 public interface IAdvertisementService
 {
+    Task<List<Advertisement>> GetAllAdvertisements();
     Task<List<Advertisement>> GetAllActiveAds();
-    
-    Task<User[]> GetAllUsers();
+    Task<List<Advertisement>> GetMyAds(string loggedInUserId);
 }

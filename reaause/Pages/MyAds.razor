@@ -7,6 +7,30 @@
 
 <h3>MyAds</h3>
 
+<div class="item-grid">
+    @foreach (var ad in myAds)
+    {
+        <div class="item-card">
+            @if (!string.IsNullOrWhiteSpace(ad.Picture))
+            {
+                <img src="@ad.Picture" alt="AdPicture" class="item-image" />
+            }
+            <div class="item-info">
+                <p><strong>Name:</strong> @ad.Name</p>
+                <p><strong>Category:</strong> @ad.Category</p>
+                <p><strong>Color:</strong> @ad.Color</p>
+                <p><strong>Price:</strong> @ad.Price</p>
+                <p><strong>Description:</strong> @ad.Description</p>
+                <p><strong>Condition:</strong> @ad.Condition</p>
+                <p><strong>At School:</strong> @ad.AtSchool</p>
+                <p><strong>Location:</strong> @ad.Location?.Name</p>
+                <p><strong>Status:</strong> @ad.Status</p>
+                <p><strong>Owner:</strong> @ad.Seller?.Name</p>
+            </div>
+        </div>
+    }
+</div>
+
 @code {
     private List<Advertisement> myAds = new();
     private User? loggedIn;
@@ -19,7 +43,12 @@
             navManager.NavigateTo("login/market");
             return;
         }
-       
+        await GetMyAds();
+    }
+
+    private async Task GetMyAds()
+    {
+        myAds = await aService.GetMyAds(loggedIn.Id);
     }
 
 }

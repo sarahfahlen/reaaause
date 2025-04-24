@@ -2,5 +2,5 @@ using shared;
 
 public interface IPurchaseService
 {
-    
+    Task<List<(Advertisement, Purchase)>> GetMyPurchase(string loggedInUserId);
 }
