@@ -1,6 +1,8 @@
+using shared;
+
 namespace backend.Repository;
 
-public class ILoginRepository
+public interface ILoginRepository
 {
-    
+    User[] GetAllUsers();
 }

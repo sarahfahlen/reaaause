@@ -27,9 +27,9 @@ public class LoginServiceClientSite : ILoginService
         return res;
     }
     
-    public async Task<bool> Login(string Email, string Password)
+    public async Task<bool> Login(string email, string Password)
     {
-        User? u = await Validate(Email, Password);
+        User? u = await Validate(email, Password);
         if (u != null)
         {
             u.Password = "validated";
@@ -42,11 +42,11 @@ public class LoginServiceClientSite : ILoginService
 
     public static List<User> users = new List<User> { rip, rap, rup };
 
-    protected virtual async Task<User?> Validate(string username, string password)
+    protected virtual async Task<User?> Validate(string email, string password)
     {
         foreach (User u in users)
 
-            if (username.Equals(u.Email) && password.Equals(u.Password))
+            if (email.Equals(u.Email) && password.Equals(u.Password))
                 return u;
 
         return null;
