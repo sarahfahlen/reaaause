@@ -1,5 +1,25 @@
+@using reaause.Services.Advertisment
+@using shared;
+@inject NavigationManager navManager
+@inject IAdvertisementService aService
+@inject ILoginService lService
+@page "/myads"
+
 <h3>MyAds</h3>
 
 @code {
-    
+    private List<Advertisement> myAds = new();
+    private User? loggedIn;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loggedIn = await lService.GetUserLoggedIn();
+        if (loggedIn == null)
+        {
+            navManager.NavigateTo("login/market");
+            return;
+        }
+       
+    }
+
 }

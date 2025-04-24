@@ -5,12 +5,10 @@ namespace shared;
 public class Purchase
 {
     [BsonRepresentation(BsonType.ObjectId)]
-    public string FacilityId { get; set; } = ObjectId.GenerateNewId().ToString();
+    public string PurchaseId { get; set; } = ObjectId.GenerateNewId().ToString();
 
-    public string Name { get; set; }
-    public string OpeningHours { get; set; }
+    public double Bid { get; set; }
+    public string Status { get; set; }
 
     public Buyer Buyer { get; set; }
-    
-    public User StaffMember { get; set; }
 }
