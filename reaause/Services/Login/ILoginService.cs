@@ -7,5 +7,5 @@ public interface ILoginService
     
     Task<bool> Login(string brugernavn, string password);
     
-    Task<User[]> GetAll(); 
+    Task<User[]> GetAll();
 }
