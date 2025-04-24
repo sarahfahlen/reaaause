@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\reaause\reaause.csproj" />
       <ProjectReference Include="..\shared\shared.csproj" />
     </ItemGroup>
 
