@@ -60,7 +60,7 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/market" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="market" Match="NavLinkMatch.All">
                         <span class="bi bi-recycle me-1"></span> Market
                     </NavLink>
                 </li>
@@ -105,11 +105,11 @@
     {
         await localStorage.RemoveItemAsync("user");
         currentUser = null;
-        navManager.NavigateTo("/", forceLoad: true);
+        navManager.NavigateTo("/login/market", forceLoad: true);
     }
 
     private void GotoLogin()
     {
-        navManager.NavigateTo("/login/mypurchases", forceLoad: true);
+        navManager.NavigateTo("/login/market", forceLoad: true);
     }
 }

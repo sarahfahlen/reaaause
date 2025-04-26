@@ -17,7 +17,13 @@
     <div class="form-group mt-2">
         <button class="btn btn-primary" @onclick="OnClickLogin">Login</button>
     </div>
-    <p class="text-danger">@errorText</p>
+    @if (!string.IsNullOrEmpty(errorText))
+    {
+        <div class="error-message">
+            <span class="error-icon">⚠️</span>
+            <span class="error-text">@errorText</span>
+        </div>
+    }
 </div>
 </div>
 @code {
@@ -31,10 +37,12 @@
     {
         var succes = await loginService.Login(Email, Password);
         if (!succes)
-            errorText = "No match found - retry...";
+        {
+            errorText = "Invalid email or password. Please try again.";
+        }
         else
-            navManager.NavigateTo(target);
-        navManager.NavigateTo(target, forceLoad: true);
+        {
+            navManager.NavigateTo(target, forceLoad: true);
+        }
     }
-
 }

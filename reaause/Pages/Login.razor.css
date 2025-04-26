@@ -1,10 +1,11 @@
+/* Login page background */
 .login-page-background {
     background-color: #f0e6d2;
     min-height: 100vh;
-    width: 100vw; /* Brug hele vinduets bredde */
-    margin: 0; /* Fjern margin */
-    padding: 0; /* Fjern padding */
-    position: absolute; /* Sikrer at elementet positioneres i forhold til vinduet */
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -13,15 +14,30 @@
     justify-content: center;
     align-items: center;
 }
-/* Centrér loginform og tilføj blød grøn baggrund */
+
+/* Login container with animation */
 .login-container {
-    max-width: 350px; /* Reduceret bredde */
+    max-width: 350px;
     margin: 4rem auto;
     background-color: #eaf5ef;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInScale 0.5s ease-out;
 }
+
+/* Login container animation */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
 /* Overskrift */
 h3 {
     text-align: center;
@@ -78,10 +94,56 @@ label {
     transform: translateY(0);
 }
 
-/* Fejltekst */
-.text-danger {
+/* Enhanced error text styling */
+.error-message {
+    background-color: #fff0f0;
+    border-left: 4px solid #e74c3c;
+    color: #c0392b;
+    font-size: 0.9rem;
     margin-top: 1rem;
-    text-align: center;
-    font-weight: 500;
-    color: #b74c4c;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    animation: slideInAndShake 0.5s ease-in-out;
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.1);
+    transition: all 0.3s ease;
+}
+
+.error-message:empty {
+    display: none;
+}
+
+.error-icon {
+    margin-right: 0.75rem;
+    font-size: 1rem;
+    color: #e74c3c;
+}
+
+.error-text {
+    flex: 1;
+}
+
+/* Animation for error message */
+@keyframes slideInAndShake {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    70% {
+        transform: translateX(5px);
+    }
+    80% {
+        transform: translateX(-3px);
+    }
+    90% {
+        transform: translateX(2px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
