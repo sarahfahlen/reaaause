@@ -36,9 +36,9 @@
                 <p class="ad-description">@ad.Description</p>
                 @if (loggedIn.Name != ad.Seller.Name)
                 {
-                    <button class ="buy-button" @onclick="() => OpenBidPopup(ad.AdId)">Request purchase</button>
+                    <button class ="buy-button" @onclick="() => OpenBidPopup(ad.Id)">Request purchase</button>
                 }
-                @if (selectedAdId == ad.AdId)
+                @if (selectedAdId == ad.Id)
                 {
                     <div class="bid-popup">
                         <label>Enter bid:</label>
@@ -47,9 +47,9 @@
                             <button class="submit-button" @onclick="() => SubmitBid(ad)">Save</button>
                             <button class="cancel-button" @onclick="CancelBid">Cancel</button>
                         </div>
-                    </div>
+                    </div>  
                 }
-                @if (showSuccessMessage && selectedAdId == ad.AdId)
+                @if (showSuccessMessage && selectedAdId == ad.Id)
                 {
                     <div class="success-message">
                         Your bid has been submitted!
