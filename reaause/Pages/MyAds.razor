@@ -262,7 +262,7 @@
                 req.Status = "declined"; // Opdater lokal kopi
             }
 
-            // ✅ Nu skal vi tjekke om der stadig er pending bud
+            // Her tjekker vi om der stadig er pending bud
             if (!adInList.PurchaseRequests.Any(r => r.Status == "pending"))
             {
                 // Ingen pending - vi sætter annoncen som "active"
@@ -270,7 +270,6 @@
                 adInList.Status = "active"; // Opdater lokal kopi så UI viser det
             }
         }
-
         StateHasChanged(); // Tving UI til at re-render
     }
 
