@@ -212,14 +212,9 @@
     {
         if (request == null || ad == null)
             return;
-
-        // 1. Opdater purchase status til "accepted"
+        
         await pService.UpdatePurchaseStatus(request.PurchaseId, "accepted");
-
-        // 2. Opdater advertisement status til "sold"
         await aService.UpdateAdStatus(ad.Id, "sold");
-
-        // 3. Genindlæs mine annoncer
         await GetMyAds();
     }
 
@@ -227,14 +222,8 @@
     {
         if (request == null || ad == null)
             return;
-
-        // 1. Opdater purchase status til "declined"
         await pService.UpdatePurchaseStatus(request.PurchaseId, "declined");
-
-        // 2. Opdater advertisement status tilbage til "active"
         await aService.UpdateAdStatus(ad.Id, "active");
-
-        // 3. Genindlæs mine annoncer
         await GetMyAds();
     }
 

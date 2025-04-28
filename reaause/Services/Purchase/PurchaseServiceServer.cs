@@ -25,5 +25,10 @@ namespace reaause.Services.Purchase
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdatePurchaseStatus(string purchaseID, string newStatus)
+        {
+            throw new NotImplementedException();
+        }
     } 
 }
