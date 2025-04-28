@@ -32,10 +32,12 @@ namespace reaause.Services.Advertisment
             await httpClient.PostAsJsonAsync("api/advertisements", ad);
         }
 
-        public Task UpdateAdStatus(string adId, string newStatus)
+        public async Task UpdateAdStatus(string adId, string newStatus)
         {
-            throw new NotImplementedException();
+            var content = new StringContent($"\"{newStatus}\"", System.Text.Encoding.UTF8, "application/json");
+            await httpClient.PutAsync($"api/advertisements/status/{adId}", content);
         }
+
 
     }
 }

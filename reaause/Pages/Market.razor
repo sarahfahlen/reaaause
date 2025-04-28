@@ -125,6 +125,8 @@
         };
 
         await pService.AddPurchase(ad.Id, newPurchase);
+        
+        await aService.UpdateAdStatus(ad.Id, "reserved");
 
         ads = await aService.GetAllAdvertisements();
 
