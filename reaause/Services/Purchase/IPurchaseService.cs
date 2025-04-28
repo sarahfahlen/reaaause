@@ -6,6 +6,5 @@ public interface IPurchaseService
 
 
     Task AddPurchase(string adId, Purchase purchase);
-
-    Task UpdatePurchaseStatus(string purchaseID, string newStatus);
+    Task UpdatePurchaseRequestStatus(string adId, string requestPurchaseId, string declined);
 }

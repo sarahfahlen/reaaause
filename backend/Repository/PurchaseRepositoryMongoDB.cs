@@ -28,11 +28,20 @@ namespace backend.Repository
             }
         }
         
-        public async Task UpdatePurchaseStatus(string purchaseId, string newStatus)
+        public async Task UpdatePurchaseRequestStatus(string adId, string purchaseId, string newStatus)
         {
-            var filter = Builders<Advertisement>.Filter.Eq(a => a.Id, purchaseId);
-            var update = Builders<Advertisement>.Update.Set(a => a.Status, newStatus);
-            await PurchaseCollection.UpdateOneAsync(filter, update);
+            var filter = Builders<Advertisement>.Filter.Eq(a => a.Id, adId);
+            var update = Builders<Advertisement>.Update
+                .Set("PurchaseRequests.$[elem].Status", newStatus);
+
+            var arrayFilters = new List<ArrayFilterDefinition>
+            {
+                new JsonArrayFilterDefinition<shared.Purchase>("{ 'elem.PurchaseId': ObjectId('" + purchaseId + "') }")
+            };
+
+            var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
+
+            await PurchaseCollection.UpdateOneAsync(filter, update, updateOptions);
         }
         
         public async Task AddPurchase(string adId, Purchase newPurchase)
@@ -70,8 +79,7 @@ namespace backend.Repository
                 await PurchaseCollection.UpdateOneAsync(filter, pushUpdate);
             }
         }
-
-
+        
 
         public async Task<List<PurchaseWithAd>> GetPurchasesByUserEmail(string userEmail)
         {
