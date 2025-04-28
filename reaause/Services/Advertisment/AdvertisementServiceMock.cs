@@ -20,9 +20,9 @@ public class AdvertisementServiceMock : IAdvertisementService
             Name = rip.Name,
             Email = rip.Email
         },
-        PurchaseRequests = new List<Purchase>
+        PurchaseRequests = new List<shared.Purchase>
         {
-            new Purchase
+            new shared.Purchase
             {
                 PurchaseId = ObjectId.GenerateNewId().ToString(),
                 Bid = 200,
@@ -34,7 +34,7 @@ public class AdvertisementServiceMock : IAdvertisementService
                     Email = rup.Email
                 }
             },
-            new Purchase
+            new shared.Purchase
             {
                 PurchaseId = ObjectId.GenerateNewId().ToString(),
                 Bid = 230,
@@ -62,8 +62,8 @@ public class AdvertisementServiceMock : IAdvertisementService
             Name = rap.Name,
             Email = rap.Email
         },
-        PurchaseRequests = new List<Purchase>{
-        new Purchase
+        PurchaseRequests = new List<shared.Purchase>{
+        new shared.Purchase
         {
             PurchaseId = ObjectId.GenerateNewId().ToString(),
             Bid = 100,

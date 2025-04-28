@@ -3,14 +3,15 @@ using reaause.Services.Advertisment;
 using shared;
 using static reaause.Services.Login.LoginServiceClientSite;
 using static reaause.Services.Advertisment.AdvertisementServiceMock;
+
 public class PurchaseServiceMock : IPurchaseService
 {
-    public Task<List<(Advertisement, Purchase)>> GetMyPurchase(string loggedInUserId)
+    public Task<List<PurchaseWithAd>> GetMyPurchase(string loggedInUserId)
     {
-        var adService = new AdvertisementServiceMock(); //Initiating the mock so we can access it
+        var adService = new AdvertisementServiceMock(); // Initiating the mock so we can access it
         var allAds = adService.GetAllAdvertisements().Result;
 
-        var result = new List<(Advertisement, Purchase)>();
+        var result = new List<PurchaseWithAd>(); // <-- VIGTIG ÆNDRING HER!
 
         foreach (var ad in allAds)
         {
@@ -19,10 +20,15 @@ public class PurchaseServiceMock : IPurchaseService
                 if (purchase.Buyer.UserId == loggedInUserId &&
                     (purchase.Status == "accepted" || purchase.Status == "pending"))
                 {
-                    result.Add((ad, purchase));
+                    result.Add(new PurchaseWithAd
+                    {
+                        Advertisement = ad,
+                        Purchase = purchase
+                    });
                 }
             }
         }
+
         return Task.FromResult(result);
     }
     

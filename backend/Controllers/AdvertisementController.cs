@@ -43,6 +43,13 @@ namespace backend.Controllers
             return Ok();
         }
 
+        [HttpPut("status/{adId}")]
+        public async Task<IActionResult> UpdateStatus(string adId, [FromBody] string newStatus)
+        {
+            await adRepo.UpdateAdStatus(adId, newStatus);
+            return Ok();
+        }
+
 
     }
 }

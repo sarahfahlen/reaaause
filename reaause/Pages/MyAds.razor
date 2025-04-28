@@ -9,6 +9,14 @@
 
 <h3>My Advertisements</h3>
 
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
+
 <!-- Button to add a new advertisement -->
 <button class="add-button" @onclick="OpenAddModal">Add New Advertisement</button>
 
@@ -144,6 +152,8 @@
     private string[] condOptions = { "New with tag", "As new", "Great", "Used", "Worn out" };
     private ModalDialog? addToDialog;
     private Advertisement aItem = new();
+    private string successMessage = "";
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -183,6 +193,9 @@
         await aService.AddAd(aItem);
         addToDialog?.Close();
         await GetMyAds();
+        
+        successMessage = "Annonce tilføjet!";
+        StateHasChanged(); 
     } 
     
     private void ToggleAtSchool(ChangeEventArgs e)

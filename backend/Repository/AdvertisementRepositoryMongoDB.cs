@@ -65,5 +65,12 @@ namespace backend.Repository
             await adCollection.InsertOneAsync(ad);
         }
 
+        public async Task UpdateAdStatus(string adId, string newStatus)
+        {
+            var filter = Builders<Advertisement>.Filter.Eq(a => a.Id, adId);
+            var update = Builders<Advertisement>.Update.Set(a => a.Status, newStatus);
+            await adCollection.UpdateOneAsync(filter, update);
+        }
+
     }
 }
