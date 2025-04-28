@@ -4,7 +4,7 @@
 @inject ILoginService lService
 @page "/mypurchases"
 
-<h3>MyPurchases</h3>
+<h3>My Purchases</h3>
 
 @if (myPurchases.Any())
 {
@@ -15,24 +15,28 @@
             var purchase = tuple.Item2;
 
             <div class="item-card">
-                @if (!string.IsNullOrWhiteSpace(ad.Picture))
-                {
-                    <img src="@ad.Picture" alt="AdPicture" class="item-image" />
-                }
+                <div class="image-container">
+                    @if (!string.IsNullOrWhiteSpace(ad.Picture))
+                    {
+                        <img src="@ad.Picture" alt="AdPicture" class="item-image" />
+                    }
+                    <div class="badge @GetStatusBadgeClass(purchase.Status)">
+                        @purchase.Status
+                    </div>
+                </div>
 
                 <div class="item-info">
-                    <p><strong>Name:</strong> @ad.Name</p>
-                    <p><strong>Category:</strong> @ad.Category</p>
-                    <p><strong>Color:</strong> @ad.Color</p>
-                    <p><strong>Price:</strong> @ad.Price DKK</p>
-                    <p><strong>Description:</strong> @ad.Description</p>
-                    <p><strong>Condition:</strong> @ad.Condition</p>
-                    <p><strong>At School:</strong> @(ad.AtSchool ? "Yes" : "No")</p>
-                    <p><strong>Location:</strong> @ad.Location?.Name</p>
-                    <p><strong>Owner:</strong> @ad.Seller?.Name</p>
-
-                    <hr />
-
+                    <h3 class="ad-title">@ad.Name</h3>
+                    <div class="ad-details">
+                        <div><span>Category:</span> @ad.Category</div>
+                        <div><span>Color:</span> @ad.Color</div>
+                        <div><span>Price:</span> @ad.Price DKK</div>
+                        <div><span>Condition:</span> @ad.Condition</div>
+                        <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
+                        <div><span>Location:</span> @ad.Location?.Name</div>
+                    </div>
+                    
+                    <p class="ad-description">@ad.Description</p>
                     <p><strong>My Bid:</strong> @purchase.Bid DKK</p>
                     <p><strong>Purchase Status:</strong> @purchase.Status</p>
                 </div>
@@ -58,5 +62,15 @@ else
         }
 
         myPurchases = await pService.GetMyPurchase(loggedIn.Id);
+    }
+    
+    private string GetStatusBadgeClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "pending" => "badge-pending",
+            "accepted" => "badge-accepted",
+            _ => "badge-default"
+        };
     }
 }

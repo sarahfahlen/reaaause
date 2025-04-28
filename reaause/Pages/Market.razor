@@ -11,22 +11,33 @@
     @foreach (var ad in ads)
     {
         <div class="item-card">
-            @if (!string.IsNullOrWhiteSpace(ad.Picture))
-            {
-                <img src="@ad.Picture" alt="AdPicture" class="item-image" />
-            }
+            <div class="image-container">
+                @if (!string.IsNullOrWhiteSpace(ad.Picture))
+                {
+                    <img src="@ad.Picture" alt="AdPicture" class="item-image" />
+                }
+                <div class="badge @GetStatusBadgeClass(ad.Status)">
+                    @ad.Status
+                </div>
+            </div>
+
             <div class="item-info">
-                <p><strong>Name:</strong> @ad.Name</p>
-                <p><strong>Category:</strong> @ad.Category</p>
-                <p><strong>Color:</strong> @ad.Color</p>
-                <p><strong>Price:</strong> @ad.Price</p>
-                <p><strong>Description:</strong> @ad.Description</p>
-                <p><strong>Condition:</strong> @ad.Condition</p>
-                <p><strong>At School:</strong> @ad.AtSchool</p>
-                <p><strong>Location:</strong> @ad.Location?.Name</p>
-                <p><strong>Status:</strong> @ad.Status</p>
-                <p><strong>Owner:</strong> @ad.Seller?.Name</p>
-                
+                <h3 class="ad-title">@ad.Name</h3>
+                <div class="ad-details">
+                    <div><span>Category:</span> @ad.Category</div>
+                    <div><span>Color:</span> @ad.Color</div>
+                    <div><span>Price:</span> @ad.Price DKK</div>
+                    <div><span>Condition:</span> @ad.Condition</div>
+                    <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
+                    <div><span>Location:</span> @ad.Location?.Name</div>
+                    <div><span>Owner:</span> @ad.Seller?.Name</div>
+                </div>
+
+                <p class="ad-description">@ad.Description</p>
+                @if (loggedIn.Name != ad.Seller.Name)
+                {
+                    <button class ="buy-button"> Request purchase </button>
+                }
             </div>
         </div>
     }
@@ -51,6 +62,19 @@
     private async Task GetAllActive()
     {
         ads = await aService.GetAllActiveAds();
+    }
+    
+    //used for styling the badge in the advertisements
+    private string GetStatusBadgeClass(string status)
+    {
+        return status.ToLower() switch
+        {
+            "active" => "badge-active",
+            "reserved" => "badge-reserved",
+            "sold" => "badge-sold",
+            "inactive" => "badge-inactive",
+            _ => "badge-default"
+        };
     }
     
     

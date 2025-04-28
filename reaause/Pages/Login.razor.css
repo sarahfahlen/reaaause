@@ -1,6 +1,5 @@
 /* Login page background */
 .login-page-background {
-    background-color: #f0e6d2;
     min-height: 100vh;
     width: 100vw;
     margin: 0;
@@ -19,7 +18,7 @@
 .login-container {
     max-width: 350px;
     margin: 4rem auto;
-    background-color: #eaf5ef;
+    background-color: #CEDEBD;
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -41,7 +40,7 @@
 /* Overskrift */
 h3 {
     text-align: center;
-    color: #3A725E;
+    color: #435334;
     margin-bottom: 1.5rem;
     font-weight: 600;
 }
@@ -49,7 +48,7 @@ h3 {
 /* Label stil */
 label {
     font-weight: 600;
-    color: #3A725E;
+    color: #435334;
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -72,8 +71,8 @@ label {
 
 /* Login-knap */
 .btn-primary {
-    background-color: #4E7C68;
-    border-color: #4E7C68;
+    background-color: #9EB384;
+    border-color: #9EB384;
     color: white;
     font-weight: 600;
     padding: 0.5rem 1rem;
@@ -84,8 +83,8 @@ label {
 }
 
 .btn-primary:hover {
-    background-color: #3d6453;
-    border-color: #3d6453;
+    background-color: #435334;
+    border-color: #435334;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

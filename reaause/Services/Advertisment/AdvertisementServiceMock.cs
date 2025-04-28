@@ -12,6 +12,7 @@ public class AdvertisementServiceMock : IAdvertisementService
         Category = "Furniture",
         Price = 250,
         AtSchool = false,
+        Picture = "https://scontent-cph2-1.xx.fbcdn.net/v/t45.5328-4/489611863_695112269689754_4653232189420530797_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=101&ccb=1-7&_nc_sid=247b10&_nc_ohc=ytIS28JHSvcQ7kNvwH0kiXe&_nc_oc=AdlN-QVzADdXivX7H59PMzgrkpk7gyZFz3YM7lbUGADntQgQoP_b59cprRsyQ8QBfnE&_nc_zt=23&_nc_ht=scontent-cph2-1.xx&_nc_gid=4VGNsjY0Zk3WV_OUM8wlHQ&oh=00_AfFyY7HuNFF6njqx2q7DnGrPTqSTI9hmVNSp7C6jFfCkOA&oe=6813DA87",
         Status = "active",
         Seller = new Seller
         {
