@@ -99,7 +99,7 @@
 
 <!-- Cards for each ad -->
 <div class="item-grid">
-    @foreach (var ad in myAds.Where(ad => ad.Status != "sold"))
+    @foreach (var ad in myAds)
     {
         <div class="item-card">
             <div class="image-container">
@@ -129,7 +129,7 @@
 
                 </div>
 
-                @if (ad.PurchaseRequests != null && ad.PurchaseRequests.Any(p => p.Status == "pending"))
+                @if ((ad.Status == "active" || ad.Status == "reserved") && ad.PurchaseRequests != null && ad.PurchaseRequests.Any(p => p.Status == "pending"))
                 {
                     <div class="purchase-requests">
                         <h3>Purchase Requests</h3>
@@ -223,17 +223,28 @@
         
         await pService.UpdatePurchaseStatus(request.PurchaseId, "accepted");
         await aService.UpdateAdStatus(ad.Id, "sold");
+        StateHasChanged(); 
         await GetMyAds();
     }
 
     private async Task DeclinePurchase(Advertisement ad, Purchase request)
     {
-        if (request == null || ad == null)
-            return;
         await pService.UpdatePurchaseStatus(request.PurchaseId, "declined");
-        await aService.UpdateAdStatus(ad.Id, "active");
-        await GetMyAds();
+
+        // Fjerner declined request fra listen direkte
+        var adInList = myAds.FirstOrDefault(x => x.Id == ad.Id);
+        if (adInList != null)
+        {
+            var req = adInList.PurchaseRequests.FirstOrDefault(r => r.PurchaseId == request.PurchaseId);
+            if (req != null)
+            {
+                req.Status = "declined"; // Opdater lokal kopi
+            }
+        }
+
+        StateHasChanged(); // Tving UI til at re-render
     }
+
 
 
 

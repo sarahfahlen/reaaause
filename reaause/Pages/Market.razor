@@ -29,7 +29,7 @@
     </div>
 
 <div class="item-grid">
-    @foreach (var ad in ads)
+    @foreach (var ad in ads.Where(ad => ad.Status != "sold"))
     {
         <div class="item-card">
             <div class="image-container">
