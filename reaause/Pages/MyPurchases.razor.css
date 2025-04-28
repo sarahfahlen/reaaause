@@ -106,7 +106,7 @@ h3 {
     background-color: #c68642;
 }
 
-.badge-sold {
+.badge-sold, .badge-declined {
     background-color: #b0413e;
 }
 
