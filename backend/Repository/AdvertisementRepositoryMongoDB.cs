@@ -75,5 +75,18 @@ namespace backend.Repository
             var deleteResult = adCollection
                 .DeleteOne(Builders<Advertisement>.Filter.Where(a => a.Id == id));
         }
+        public void UpdateAd(Advertisement ad)
+        {
+            var updateDef = Builders<Advertisement>.Update
+                .Set(x => x.Name, ad.Name)
+                .Set(x => x.Category, ad.Category)
+                .Set(x => x.Color, ad.Color)
+                .Set(x => x.Condition, ad.Condition)
+                .Set(x => x.Price, ad.Price)
+                .Set(x => x.AtSchool, ad.AtSchool)
+                .Set(x => x.Description, ad.Description)
+                .Set(x => x.Picture, ad.Picture);
+            adCollection.UpdateOne(x => x.Id == ad.Id, updateDef);
+        }
     }
 }

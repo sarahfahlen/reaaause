@@ -10,5 +10,6 @@ namespace backend.Repository
         Task AddAdvertisement(Advertisement ad);
         Task UpdateAdStatus(string adId, string newStatus);
         void Remove(string id);
+        void UpdateAd(Advertisement ad);
     }
 }

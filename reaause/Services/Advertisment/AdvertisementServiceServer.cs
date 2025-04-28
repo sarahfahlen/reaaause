@@ -38,9 +38,9 @@ namespace reaause.Services.Advertisment
             await httpClient.PutAsync($"api/advertisements/status/{adId}", content);
         }
 
-        public Task UpdateAd(Advertisement ad)
+        public async Task UpdateAd(Advertisement ad)
         {
-            throw new NotImplementedException();
+            await httpClient.PutAsJsonAsync($"/api/advertisements", ad);
         }
 
         public async Task DeleteById(string id)
