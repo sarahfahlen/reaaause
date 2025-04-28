@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using reaause;
 using reaause.Services.Advertisment;
+using reaause.Services.Facilities;
+using reaause.Services.Facility;
 using reaause.Services.Login;
 using reaause.Services.Purchase;
 
@@ -23,5 +25,8 @@ builder.Services.AddScoped<IAdvertisementService, AdvertisementServiceServer>();
 builder.Services.AddScoped<ILoginService, LoginServiceServer>(); 
 
 builder.Services.AddScoped<IPurchaseService, PurchaseServiceServer>();
+
+builder.Services.AddScoped<IFacilityService, FacilityServiceServer>();
+
 
 await builder.Build().RunAsync();

@@ -1,15 +1,28 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-namespace shared;
 
-public class Facility
+namespace shared
 {
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string FacilityId { get; set; } = ObjectId.GenerateNewId().ToString();
+    public class Facility
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
-    public string Name { get; set; }
-    public string OpeningHours { get; set; }
+        public string Name { get; set; }
+        public string RoomNumber { get; set; }
+        public OpeningHours OpeningHours { get; set; } = new();
+        public string? StaffUserId { get; set; }
+    }
 
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string? StaffUserId { get; set; }  // Nullable, hvis ikke altid sat
+    public class OpeningHours
+    {
+        public string Monday { get; set; } = "";
+        public string Tuesday { get; set; } = "";
+        public string Wednesday { get; set; } = "";
+        public string Thursday { get; set; } = "";
+        public string Friday { get; set; } = "";
+        public string Saturday { get; set; } = "";
+        public string Sunday { get; set; } = "";
+    }
 }

@@ -1,0 +1,61 @@
+@page "/facilities"
+@using reaause.Services.Facilities
+@using shared
+@inject IFacilityService FacilityService
+@inject ILoginService LoginService
+
+<h3>Facilities at Eaaa</h3>
+
+@if (facilities == null)
+{
+    <p>Loading facilities...</p>
+}
+else
+{
+    <div class="item-grid">
+        @foreach (var facility in facilities)
+        {
+            <div class="item-card">
+                <div class="item-info">
+                    <strong>@facility.Name</strong>
+                    <div class="room-number">@facility.RoomNumber</div>
+
+                    <div class="day-hours">Monday: @facility.OpeningHours.Monday</div>
+                    <div class="day-hours">Tuesday: @facility.OpeningHours.Tuesday</div>
+                    <div class="day-hours">Wednesday: @facility.OpeningHours.Wednesday</div>
+                    <div class="day-hours">Thursday: @facility.OpeningHours.Thursday</div>
+                    <div class="day-hours">Friday: @facility.OpeningHours.Friday</div>
+                    <div class="day-hours">Saturday: @facility.OpeningHours.Saturday</div>
+                    <div class="day-hours">Sunday: @facility.OpeningHours.Sunday</div>
+
+                    <div class="staff-member">Staffmember: @GetStaffName(facility.StaffUserId)</div>
+                </div>
+            </div>
+        }
+    </div>
+
+}
+
+@code {
+    private List<Facility> facilities = new();
+    private List<User> staffUsers = new();
+    private Facility newFacility = new Facility();
+    private bool isStaff = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        facilities = await FacilityService.GetAllFacilities();
+        staffUsers = await FacilityService.GetAllStaffUsers();
+        var user = await LoginService.GetUserLoggedIn();
+        isStaff = user?.Staff == true;
+    }
+
+    private string GetStaffName(string? staffUserId)
+    {
+        if (string.IsNullOrEmpty(staffUserId))
+            return "No staffmember";
+
+        var staff = staffUsers.FirstOrDefault(u => u.Id == staffUserId);
+        return staff != null ? staff.Name : "No staffmember";
+    }
+}

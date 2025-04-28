@@ -29,6 +29,12 @@ namespace backend.Controllers
 
             return Ok(user);
         }
+        [HttpGet("staff")]
+        public ActionResult<IEnumerable<User>> GetAllStaff()
+        {
+            var users = loginRepo.GetAllUsers().Where(u => u.Staff == true).ToArray();
+            return Ok(users);
+        }
 
 
     }

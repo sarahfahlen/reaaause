@@ -1,0 +1,82 @@
+/* Facilities Page Styling */
+
+/* Grid for items */
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Single Facility Card */
+.item-card {
+    background-color: rgba(158, 179, 132, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Facility Info Inside Card */
+.item-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #435334;
+}
+
+/* Facility Name */
+.item-info strong {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2a2a2a;
+}
+
+/* RoomNumber right under name */
+.item-info .room-number {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #435334;
+}
+
+/* Days opening hours */
+.item-info .day-hours {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #435334;
+}
+
+/* Staff member */
+.item-info .staff-member {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #556B2F;
+}
+
+/* Page Heading */
+h3 {
+    text-align: center;
+    color: #435334;
+    margin: 2rem 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+    .item-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+}
