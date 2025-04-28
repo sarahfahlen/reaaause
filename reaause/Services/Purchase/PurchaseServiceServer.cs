@@ -21,14 +21,16 @@ namespace reaause.Services.Purchase
             return result ?? new List<PurchaseWithAd>();
         }
 
-        public Task AddPurchase(string adId, shared.Purchase purchase)
+        public async Task AddPurchase(string adId, shared.Purchase purchase)
         {
-            throw new NotImplementedException();
+            await client.PostAsJsonAsync($"api/purchases/add/{adId}", purchase);
+
         }
 
-        public Task UpdatePurchaseStatus(string purchaseID, string newStatus)
+        public async Task UpdatePurchaseStatus(string purchaseID, string newStatus)
         {
-            throw new NotImplementedException();
+            var content = new StringContent($"\"{newStatus}\"", System.Text.Encoding.UTF8, "application/json");
+            await client.PutAsync($"api/advertisements/status/{purchaseID}", content);
         }
     } 
 }

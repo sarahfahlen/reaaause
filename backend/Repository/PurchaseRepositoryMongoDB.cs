@@ -27,6 +27,51 @@ namespace backend.Repository
                 throw;
             }
         }
+        
+        public async Task UpdatePurchaseStatus(string purchaseId, string newStatus)
+        {
+            var filter = Builders<Advertisement>.Filter.Eq(a => a.Id, purchaseId);
+            var update = Builders<Advertisement>.Update.Set(a => a.Status, newStatus);
+            await PurchaseCollection.UpdateOneAsync(filter, update);
+        }
+        
+        public async Task AddPurchase(string adId, Purchase newPurchase)
+        {
+            var filter = Builders<Advertisement>.Filter.Eq(a => a.Id, adId);
+
+            var ad = await PurchaseCollection.Find(filter).FirstOrDefaultAsync();
+
+            if (ad == null)
+                return;
+
+            // Tjek om der allerede findes et bud fra samme bruger
+            var existingBid = ad.PurchaseRequests?.FirstOrDefault(p => p.Buyer.Email == newPurchase.Buyer.Email);
+
+            if (existingBid != null)
+            {
+                // Brugeren har allerede budt - vi opdaterer det eksisterende bud
+                var update = Builders<Advertisement>.Update
+                    .Set("PurchaseRequests.$[elem].Bid", newPurchase.Bid)
+                    .Set("PurchaseRequests.$[elem].Status", "pending");
+
+                var arrayFilters = new List<ArrayFilterDefinition>
+                {
+                    new JsonArrayFilterDefinition<Purchase>("{ 'elem.Buyer.Email': '" + newPurchase.Buyer.Email + "' }")
+                };
+
+                var updateOptions = new UpdateOptions { ArrayFilters = arrayFilters };
+
+                await PurchaseCollection.UpdateOneAsync(filter, update, updateOptions);
+            }
+            else
+            {
+                // Ingen bud endnu - tilføj nyt
+                var pushUpdate = Builders<Advertisement>.Update.Push(a => a.PurchaseRequests, newPurchase);
+                await PurchaseCollection.UpdateOneAsync(filter, pushUpdate);
+            }
+        }
+
+
 
         public async Task<List<PurchaseWithAd>> GetPurchasesByUserEmail(string userEmail)
         {
