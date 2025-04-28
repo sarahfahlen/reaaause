@@ -242,7 +242,7 @@ header.navbar {
     }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1000px) {
     .navbar-toggler {
         display: none;
     }
