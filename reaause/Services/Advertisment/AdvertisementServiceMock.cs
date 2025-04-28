@@ -108,5 +108,16 @@ public class AdvertisementServiceMock : IAdvertisementService
     {
         allAds.Add(ad);
     }
+    
+    //Used to update the status, when a new purchase is requested
+    public async Task UpdateAdStatus(string adId, string newStatus)
+    {
+        var ad = allAds.FirstOrDefault(a => a.Id == adId);
+        if (ad != null)
+        {
+            ad.Status = newStatus;
+        }
+    }
+
 
 }

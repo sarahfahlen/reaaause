@@ -3,6 +3,7 @@
 @inject NavigationManager navManager
 @inject IAdvertisementService aService
 @inject ILoginService lService
+@inject IPurchaseService pService
 @page "/market"
 
 <h3>Market</h3>
@@ -76,12 +77,12 @@
             navManager.NavigateTo("login/market");
             return;
         }
-        await GetAllActive();
+        await GetAll();
     }
 
-    private async Task GetAllActive()
+    private async Task GetAll()
     {
-        ads = await aService.GetAllActiveAds();
+        ads = await aService.GetAllAdvertisements();
     }
     
     //used for styling the badge in the advertisements
@@ -104,10 +105,13 @@
         showSuccessMessage = false; //Clear message
     }
     
-    private void SubmitBid(Advertisement ad)
+    private async Task SubmitBid(Advertisement ad)
     {
+        if (loggedIn == null)
+        {
+            return;
+        }
 
-        //Creating a purchase object for the requested purchase
         var newPurchase = new Purchase
         {
             Bid = bidAmount,
@@ -120,19 +124,18 @@
             }
         };
 
-        // Create the list for purchase requests if advertisement doesnt have already
-        if (ad.PurchaseRequests == null)
-        {
-            ad.PurchaseRequests = new List<Purchase>();
-        }
+        await pService.AddPurchase(ad.Id, newPurchase);
 
-        //Add the purchase request to our ad
-        ad.PurchaseRequests.Add(newPurchase);
+        ads = await aService.GetAllAdvertisements();
 
-        //Clear view
         showSuccessMessage = true;
 
+        await Task.Delay(2000);
+        showSuccessMessage = false;
+        selectedAdId = null;
+        StateHasChanged();
     }
+
     private void CancelBid()
     {
         selectedAdId = null; 

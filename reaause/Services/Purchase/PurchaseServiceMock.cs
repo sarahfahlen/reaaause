@@ -25,4 +25,24 @@ public class PurchaseServiceMock : IPurchaseService
         }
         return Task.FromResult(result);
     }
+    
+    public async Task AddPurchase(string adId, Purchase purchase)
+    {
+        var adService = new AdvertisementServiceMock(); // Initiere mock adService
+        var allAds = await adService.GetAllAdvertisements(); // Hent alle annoncer
+
+        var ad = allAds.FirstOrDefault(a => a.Id == adId);
+        if (ad != null)
+        {
+            if (ad.PurchaseRequests == null)
+            {
+                ad.PurchaseRequests = new List<Purchase>();
+            }
+
+            ad.PurchaseRequests.Add(purchase);
+
+            // Opdater status til reserved
+            await adService.UpdateAdStatus(adId, "reserved");
+        }
+    }
 }

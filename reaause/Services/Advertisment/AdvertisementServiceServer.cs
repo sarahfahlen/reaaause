@@ -31,5 +31,10 @@ namespace reaause.Services.Advertisment
         {
             throw new NotImplementedException();
         }
+
+        public Task UpdateAdStatus(string adId, string newStatus)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
