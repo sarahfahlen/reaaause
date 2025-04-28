@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using MongoDB.Driver;
 using shared;
 
 namespace reaause.Services.Purchase
@@ -26,11 +27,13 @@ namespace reaause.Services.Purchase
             await client.PostAsJsonAsync($"api/purchases/add/{adId}", purchase);
 
         }
-
-        public async Task UpdatePurchaseStatus(string purchaseID, string newStatus)
+        
+        public async Task UpdatePurchaseRequestStatus(string adId, string purchaseId, string newStatus)
         {
             var content = new StringContent($"\"{newStatus}\"", System.Text.Encoding.UTF8, "application/json");
-            await client.PutAsync($"api/advertisements/status/{purchaseID}", content);
+            await client.PutAsync($"api/purchases/status/{adId}/{purchaseId}", content);
         }
+
+
     } 
 }

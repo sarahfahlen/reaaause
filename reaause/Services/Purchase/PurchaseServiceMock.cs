@@ -67,5 +67,8 @@ public class PurchaseServiceMock : IPurchaseService
         }
     }
 
-
+    public Task UpdatePurchaseRequestStatus(string adId, string requestPurchaseId, string declined)
+    {
+        throw new NotImplementedException();
+    }
 }
