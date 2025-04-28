@@ -106,8 +106,7 @@ public class AdvertisementServiceMock : IAdvertisementService
     
     public async Task AddAd(Advertisement ad)
     {
-        throw new NotImplementedException();
+        allAds.Add(ad);
     }
-    
 
 }

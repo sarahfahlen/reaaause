@@ -36,7 +36,24 @@
                 <p class="ad-description">@ad.Description</p>
                 @if (loggedIn.Name != ad.Seller.Name)
                 {
-                    <button class ="buy-button"> Request purchase </button>
+                    <button class ="buy-button" @onclick="() => OpenBidPopup(ad.AdId)">Request purchase</button>
+                }
+                @if (selectedAdId == ad.AdId)
+                {
+                    <div class="bid-popup">
+                        <label>Enter bid:</label>
+                        <InputNumber @bind-Value="bidAmount" class="form-control" />
+                        <div class="popup-buttons">
+                            <button class="submit-button" @onclick="() => SubmitBid(ad)">Save</button>
+                            <button class="cancel-button" @onclick="CancelBid">Cancel</button>
+                        </div>
+                    </div>
+                }
+                @if (showSuccessMessage && selectedAdId == ad.AdId)
+                {
+                    <div class="success-message">
+                        Your bid has been submitted!
+                    </div>
                 }
             </div>
         </div>
@@ -47,6 +64,9 @@
 @code {
     private List<Advertisement> ads = new();
     private User? loggedIn;
+    private string? selectedAdId; //The ad we want to make a bid for
+    private double bidAmount; //The bid we submit
+    private bool showSuccessMessage = false; //Status of popup message
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,6 +95,49 @@
             "inactive" => "badge-inactive",
             _ => "badge-default"
         };
+    }
+    
+    private void OpenBidPopup(string adId)
+    {
+        selectedAdId = adId;
+        bidAmount = 0; //Clear bid amount
+        showSuccessMessage = false; //Clear message
+    }
+    
+    private void SubmitBid(Advertisement ad)
+    {
+
+        //Creating a purchase object for the requested purchase
+        var newPurchase = new Purchase
+        {
+            Bid = bidAmount,
+            Status = "pending",
+            Buyer = new Buyer
+            {
+                UserId = loggedIn.Id,
+                Name = loggedIn.Name,
+                Email = loggedIn.Email
+            }
+        };
+
+        // Create the list for purchase requests if advertisement doesnt have already
+        if (ad.PurchaseRequests == null)
+        {
+            ad.PurchaseRequests = new List<Purchase>();
+        }
+
+        //Add the purchase request to our ad
+        ad.PurchaseRequests.Add(newPurchase);
+
+        //Clear view
+        showSuccessMessage = true;
+
+    }
+    private void CancelBid()
+    {
+        selectedAdId = null; 
+        bidAmount = 0;  
+        showSuccessMessage = false; 
     }
     
     

@@ -12,57 +12,78 @@
 <button class="add-button" @onclick="OpenAddModal">Add New Advertisement</button>
 
 <!-- Modal Dialog for Adding/Editing Ads -->
-<ModalDialog @ref="addToDialog" Title="@(isEditMode ? "Edit Advertisement" : "Add a New Advertisement")">
-    <EditForm Model="@aItem" OnValidSubmit="@HandleSubmit" class="p-3"> 
+<ModalDialog @ref="addToDialog" Title="Add a New Advertisement">
+    <EditForm Model="@aItem" OnValidSubmit="@HandleSubmit" class="modal-form">
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <div class="form-group">
-            <label>Name</label>
-            <InputText @bind-Value="aItem.Name" class="form-control" />
-        </div>
+        <div class="modal-grid">
+            <div class="form-group">
+                <label>Name</label>
+                <InputText @bind-Value="aItem.Name" class="form-control" />
+            </div>
 
-        <div class="form-group">
-            <label>Category</label>
-            <InputText @bind-Value="aItem.Category" class="form-control" />
-        </div>
+            <div class="form-group">
+                <label>Category</label>
+                <InputSelect id="category" @bind-Value="aItem.Category" class="form-control">
+                    @foreach (var option in catOptions)
+                    {
+                        <option value="@option">@option</option>
+                    }
+                </InputSelect>
+            </div>
 
-        <div class="form-group">
-            <label>Color</label>
-            <InputText @bind-Value="aItem.Color" class="form-control" />
-        </div>
+            <div class="form-group">
+                <label>Color</label>
+                <InputText @bind-Value="aItem.Color" class="form-control" />
+            </div>
 
-        <div class="form-group">
-            <label>Condition</label>
-            <InputSelect @bind-Value="aItem.Condition" class="form-control">
-                <option value="">Choose condition</option>
-                <option value="Ny">New</option>
-                <option value="God">Good</option>
-                <option value="Slidt">Worse</option>
-            </InputSelect>
-        </div>
+            <div class="form-group">
+                <label>Condition</label>
+                <InputSelect id="condition" @bind-Value="aItem.Condition" class="form-control">
+                    @foreach (var option in condOptions)
+                    {
+                        <option value="@option">@option</option>
+                    }
+                </InputSelect>
+            </div>
 
-        <div class="form-group">
-            <label>Description</label>
-            <InputTextArea @bind-Value="aItem.Description" class="form-control" />
-        </div>
+            <div class="form-group">
+                <label>Price (DKK)</label>
+                <InputNumber @bind-Value="aItem.Price" class="form-control" />
+            </div>
 
-        <div class="form-group">
-            <label>Price (DKK)</label>
-            <InputNumber @bind-Value="aItem.Price" class="form-control" />
-        </div>
+            <div class="form-group checkbox-group">
+                <label class="custom-checkbox">
+                    <input type="checkbox" @onchange="ToggleAtSchool" checked="@aItem.AtSchool" />
+                    At school?
+                </label>
+            </div>
 
-        <div class="form-group">
-            <label>Picture URL</label>
-            <InputText @bind-Value="aItem.Picture" class="form-control" />
+            @if (aItem.AtSchool)
+            {
+                <div class="form-group">
+                    <label for="schoolLocation">School Location:</label>
+                    <input type="text" id="schoolLocation" class="form-control" @bind="aItem.Location.Name" />
+                </div>
+            }
+
+            <div class="form-group full-width">
+                <label>Description</label>
+                <InputTextArea @bind-Value="aItem.Description" class="form-control" />
+            </div>
+
+            <div class="form-group full-width">
+                <label>Picture URL</label>
+                <InputText @bind-Value="aItem.Picture" class="form-control" />
+            </div>
         </div>
 
         <div class="form-footer">
-            <button type="submit" class="submit-button">
-                @((isEditMode ? "Save Changes" : "Add Advertisement"))
-            </button>
+            <button type="submit" class="submit-button"> Add Advertisement </button>
         </div>
-     </EditForm> 
+    </EditForm>
+
 </ModalDialog>
 
 <!-- Cards for each ad -->
@@ -99,9 +120,10 @@
 @code {
     private List<Advertisement> myAds = new();
     private User? loggedIn;
+    private string[] catOptions = { "Furniture", "Mens clothing", "Womens clothing", "Shoes", "Electronics" };
+    private string[] condOptions = { "New with tag", "As new", "Great", "Used", "Worn out" };
     private ModalDialog? addToDialog;
     private Advertisement aItem = new();
-    private bool isEditMode = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,17 +143,36 @@
 
     private void OpenAddModal()
     {
-        isEditMode = false;
-        aItem = new Advertisement();
+        aItem = new Advertisement
+        {
+            Status = "Active",
+            Seller = new Seller
+            {
+                UserId = loggedIn.Id,
+                Name = loggedIn.Name,
+                Email = loggedIn.Email
+            }
+        };
         addToDialog?.Open();
     }
 
     private async Task HandleSubmit()
     {
-            await aService.AddAd(aItem);
+        await aService.AddAd(aItem);
         addToDialog?.Close();
         await GetMyAds();
     } 
+    
+    private void ToggleAtSchool(ChangeEventArgs e)
+    {
+        aItem.AtSchool = (bool)e.Value;
+
+        if (aItem.AtSchool && aItem.Location == null)
+        {
+            aItem.Location = new Facility();
+        }
+    }
+
 
     private string GetStatusBadgeClass(string status)
     {

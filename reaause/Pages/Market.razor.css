@@ -149,5 +149,49 @@ h3 {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.bid-popup {
+    background-color: #f7f7f5;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.submit-button {
+    background-color: #435334;
+    color: white;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: #ccc;
+    color: #333;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.success-message {
+    margin-top: 1rem;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 1rem;
+}
 
 
