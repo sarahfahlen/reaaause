@@ -60,10 +60,10 @@ namespace backend.Repository
             return result;
         }
 
-
-
-
-
+        public async Task AddAdvertisement(Advertisement ad)
+        {
+            await adCollection.InsertOneAsync(ad);
+        }
 
     }
 }

@@ -7,5 +7,6 @@ namespace backend.Repository
         Task<List<Advertisement>> GetAllAdvertisements();
         Task<List<Advertisement>> GetAllActiveAdvertisements();
         Task<List<Advertisement>> GetMyAdvertisements(string userId);
+        Task AddAdvertisement(Advertisement ad);
     }
 }

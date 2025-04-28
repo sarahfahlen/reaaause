@@ -27,14 +27,15 @@ namespace reaause.Services.Advertisment
             return await httpClient.GetFromJsonAsync<List<Advertisement>>($"api/advertisements/myads/{email}");
         }
 
-        public Task AddAd(Advertisement ad)
+        public async Task AddAd(Advertisement ad)
         {
-            throw new NotImplementedException();
+            await httpClient.PostAsJsonAsync("api/advertisements", ad);
         }
 
         public Task UpdateAdStatus(string adId, string newStatus)
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -35,6 +35,14 @@ namespace backend.Controllers
             Console.WriteLine($"[DEBUG] Antal annoncer fundet: {result.Count}");
             return result;
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddAd([FromBody] Advertisement ad)
+        {
+            await adRepo.AddAdvertisement(ad);
+            return Ok();
+        }
+
 
     }
 }
