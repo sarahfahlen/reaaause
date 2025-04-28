@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\Advertisment\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\shared\shared.csproj" />
     </ItemGroup>
 
