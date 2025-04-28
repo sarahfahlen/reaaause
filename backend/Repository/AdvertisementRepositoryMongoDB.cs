@@ -56,7 +56,6 @@ namespace backend.Repository
         {
             var filter = Builders<Advertisement>.Filter.Eq("Seller.Email", email);
             var result = await adCollection.Find(filter).ToListAsync();
-            Console.WriteLine($"[DEBUG] Fandt {result.Count} annoncer for email {email}");
             return result;
         }
 
@@ -71,6 +70,10 @@ namespace backend.Repository
             var update = Builders<Advertisement>.Update.Set(a => a.Status, newStatus);
             await adCollection.UpdateOneAsync(filter, update);
         }
-
+        public void Remove(string id)
+        {
+            var deleteResult = adCollection
+                .DeleteOne(Builders<Advertisement>.Filter.Where(a => a.Id == id));
+        }
     }
 }

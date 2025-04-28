@@ -43,9 +43,9 @@ namespace reaause.Services.Advertisment
             throw new NotImplementedException();
         }
 
-        public Task DeleteById(string id)
+        public async Task DeleteById(string id)
         {
-            throw new NotImplementedException();
+            await httpClient.DeleteAsync($"/api/advertisements/{id}");
         }
 
 

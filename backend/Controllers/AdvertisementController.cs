@@ -30,9 +30,7 @@ namespace backend.Controllers
         [HttpGet("myads/{email}")]
         public async Task<IEnumerable<Advertisement>> GetMyAds(string email)
         {
-            Console.WriteLine($"[DEBUG] MyAds kaldt med email: {email}");
             var result = await adRepo.GetMyAdvertisements(email);
-            Console.WriteLine($"[DEBUG] Antal annoncer fundet: {result.Count}");
             return result;
         }
         
@@ -49,7 +47,12 @@ namespace backend.Controllers
             await adRepo.UpdateAdStatus(adId, newStatus);
             return Ok();
         }
-
+        [HttpDelete("{id}")]
+        public void Remove(string id)
+        {
+            Console.WriteLine($"Sletter tøj med id {id}");
+            adRepo.Remove(id);
+        }
 
     }
 }

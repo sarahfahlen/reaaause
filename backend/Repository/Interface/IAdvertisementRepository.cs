@@ -9,6 +9,6 @@ namespace backend.Repository
         Task<List<Advertisement>> GetMyAdvertisements(string userId);
         Task AddAdvertisement(Advertisement ad);
         Task UpdateAdStatus(string adId, string newStatus);
-
+        void Remove(string id);
     }
 }
