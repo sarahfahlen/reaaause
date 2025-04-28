@@ -1,5 +1,5 @@
 @using reaause.Services.Advertisment
-@using shared;
+@using shared
 @inject NavigationManager navManager
 @inject IAdvertisementService aService
 @inject ILoginService lService
@@ -7,29 +7,32 @@
 @page "/market"
 
 <h3>Market</h3>
-    <div class="filter-bar">
-        <input type="text" placeholder="Search ads..." class="search-input" />
+<div class="filter-bar">
+    <input type="text" placeholder="Search ads..." class="search-input" @bind="searchTerm" @bind:event="oninput" />
 
-        <select class="filter-select">
-            <option>All Categories</option>
-            <option>Furniture</option>
-            <option>Mens clothing</option>
-            <option>Womens clothing</option>
-            <option>Shoes</option>
-            <option>Electronics</option>
-        </select>
-        <div class="price-range">
-            <input type="number" placeholder="Min Price" class="price-input" />
-            <input type="number" placeholder="Max Price" class="price-input" />
-        </div>
-        <div class="filter-checkbox">
-            <input type="checkbox" id="atSchool" />
-            <label for="atSchool">At School?</label>
-        </div>
+
+    <select class="filter-select" @bind="selectedCategory">
+        <option>All Categories</option>
+        <option>Furniture</option>
+        <option>Mens clothing</option>
+        <option>Womens clothing</option>
+        <option>Shoes</option>
+        <option>Electronics</option>
+    </select>
+
+    <div class="price-range">
+        <input type="number" placeholder="Min Price" class="price-input" @bind="minPrice" @bind:event="oninput"/>
+        <input type="number" placeholder="Max Price" class="price-input" @bind="maxPrice" @bind:event="oninput"/>
     </div>
 
+    <div class="filter-checkbox">
+        <input type="checkbox" id="atSchool" @bind="atSchoolOnly" />
+        <label for="atSchool">At School?</label>
+    </div>
+</div>
+
 <div class="item-grid">
-    @foreach (var ad in ads.Where(ad => ad.Status != "sold"))
+    @foreach (var ad in FilteredAds)
     {
         <div class="item-card">
             <div class="image-container">
@@ -55,9 +58,10 @@
                 </div>
 
                 <p class="ad-description">@ad.Description</p>
-                @if (loggedIn.Name != ad.Seller.Name)
+
+                @if (loggedIn?.Name != ad.Seller?.Name)
                 {
-                    <button class ="buy-button" @onclick="() => OpenBidPopup(ad.Id)">Request purchase</button>
+                    <button class="buy-button" @onclick="() => OpenBidPopup(ad.Id)">Request purchase</button>
                 }
                 @if (selectedAdId == ad.Id)
                 {
@@ -81,13 +85,18 @@
     }
 </div>
 
-
 @code {
     private List<Advertisement> ads = new();
     private User? loggedIn;
-    private string? selectedAdId; //The ad we want to make a bid for
-    private double bidAmount; //The bid we submit
-    private bool showSuccessMessage = false; //Status of popup message
+    private string? selectedAdId; 
+    private double bidAmount; 
+    private bool showSuccessMessage = false; 
+
+    private string searchTerm = string.Empty; 
+    private string selectedCategory = "All Categories"; 
+    private int? minPrice;
+    private int? maxPrice;
+    private bool atSchoolOnly = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,7 +114,6 @@
         ads = await aService.GetAllAdvertisements();
     }
     
-    //used for styling the badge in the advertisements
     private string GetStatusBadgeClass(string status)
     {
         return status.ToLower() switch
@@ -121,8 +129,8 @@
     private void OpenBidPopup(string adId)
     {
         selectedAdId = adId;
-        bidAmount = 0; //Clear bid amount
-        showSuccessMessage = false; //Clear message
+        bidAmount = 0;
+        showSuccessMessage = false;
     }
     
     private async Task SubmitBid(Advertisement ad)
@@ -145,13 +153,10 @@
         };
 
         await pService.AddPurchase(ad.Id, newPurchase);
-        
         await aService.UpdateAdStatus(ad.Id, "reserved");
-
         ads = await aService.GetAllAdvertisements();
 
         showSuccessMessage = true;
-
         await Task.Delay(2000);
         showSuccessMessage = false;
         selectedAdId = null;
@@ -164,6 +169,12 @@
         bidAmount = 0;  
         showSuccessMessage = false; 
     }
-    
-    
+
+    private IEnumerable<Advertisement> FilteredAds => ads
+        .Where(ad => ad.Status != "sold")
+        .Where(ad => string.IsNullOrWhiteSpace(searchTerm) || ad.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+        .Where(ad => selectedCategory == "All Categories" || ad.Category == selectedCategory)
+        .Where(ad => !minPrice.HasValue || ad.Price >= minPrice)
+        .Where(ad => !maxPrice.HasValue || ad.Price <= maxPrice)
+        .Where(ad => !atSchoolOnly || ad.AtSchool);
 }
