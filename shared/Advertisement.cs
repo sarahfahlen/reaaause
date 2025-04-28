@@ -4,8 +4,9 @@ namespace shared;
 
 public class Advertisement
 {
+    [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string AdId { get; set; } = ObjectId.GenerateNewId().ToString();
+    public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
     public string Name { get; set; }
     public string Category { get; set; }

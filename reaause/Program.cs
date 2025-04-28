@@ -17,7 +17,7 @@ builder.Services.AddScoped(sp => new HttpClient
 
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddSingleton<IAdvertisementService, AdvertisementServiceMock>();
+builder.Services.AddScoped<IAdvertisementService, AdvertisementServiceServer>();
 
 builder.Services.AddScoped<ILoginService, LoginServiceServer>(); 
 

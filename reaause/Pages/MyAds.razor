@@ -116,8 +116,10 @@
 
     private async Task GetMyAds()
     {
-        myAds = await aService.GetMyAds(loggedIn.Id);
+        myAds = await aService.GetMyAds(loggedIn.Email);
     }
+
+
 
     private void OpenAddModal()
     {
@@ -144,4 +146,5 @@
             _ => "badge-default"
         };
     }
+
 }

@@ -22,6 +22,7 @@ public class Program
 
         builder.Services.AddSingleton<LoginRepositoryMongoDB>();
         builder.Services.AddSingleton<ILoginRepository, LoginRepositoryMongoDB>();
+        builder.Services.AddSingleton<IAdvertisementRepository, AdvertisementRepositoryMongoDB>();
 
 
         
