@@ -23,7 +23,7 @@
 </div>
 
 <!-- Modal Dialog for Adding/Editing Ads -->
-<ModalDialog @ref="addToDialog" Title="Add a New Advertisement">
+<ModalDialog @ref="addToDialog" Title=@(isEditMode ? "Edit advertisement" : "Add new advertisement")>
     <EditForm Model="@aItem" OnValidSubmit="@HandleSubmit" class="modal-form">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -91,7 +91,9 @@
         </div>
 
         <div class="form-footer">
-            <button type="submit" class="submit-button"> Add Advertisement </button>
+            <button type="submit" class="submit-button">
+                 @((isEditMode ? "Save changes" : "Add advertisement"))
+            </button>
         </div>
     </EditForm>
 
@@ -124,9 +126,8 @@
                 </div>
                 <p class="ad-description">@ad.Description</p>
                 <div class="ad-actions">
-                    <button class="edit-button" title="Edit">&#9998;</button> <!-- blyant -->
-                    <button class="delete-button" title="Delete">&#10006;</button> <!-- kryds -->
-
+                    <button class="edit-button" @onclick="() => Update(ad)" title="Edit">&#9998;</button> <!-- blyant -->
+                    <button class="delete-button" @onclick="() => Delete(ad)" title="Delete">&#10006;</button> <!-- kryds -->
                 </div>
 
                 @if ((ad.Status == "active" || ad.Status == "reserved") && ad.PurchaseRequests != null && ad.PurchaseRequests.Any(p => p.Status == "pending"))
@@ -159,6 +160,7 @@
     private string[] catOptions = { "Furniture", "Mens clothing", "Womens clothing", "Shoes", "Electronics" };
     private string[] condOptions = { "New with tag", "As new", "Great", "Used", "Worn out" };
     private ModalDialog? addToDialog;
+    private bool isEditMode = false;
     private Advertisement aItem = new();
     private string successMessage = "";
 
@@ -178,11 +180,10 @@
     {
         myAds = await aService.GetMyAds(loggedIn.Email);
     }
-
-
-
+    
     private void OpenAddModal()
     {
+        isEditMode = false;
         aItem = new Advertisement
         {
             Status = "Active",
@@ -198,13 +199,32 @@
 
     private async Task HandleSubmit()
     {
-        await aService.AddAd(aItem);
+        if (isEditMode)
+        {
+            await aService.UpdateAd(aItem);
+        }
+        else
+        {
+            await aService.AddAd(aItem);   
+        }
         addToDialog?.Close();
         await GetMyAds();
-        
         successMessage = "Annonce tilføjet!";
         StateHasChanged(); 
     } 
+    
+    private async Task Update(Advertisement ad)
+    {
+        isEditMode = true;
+        aItem = ad;
+        addToDialog.Open();
+    }
+    
+    private async Task Delete(Advertisement ad)
+    {
+        await aService.DeleteById(ad.Id);
+        await GetMyAds();
+    }
     
     private void ToggleAtSchool(ChangeEventArgs e)
     {
@@ -244,11 +264,7 @@
 
         StateHasChanged(); // Tving UI til at re-render
     }
-
-
-
-
-
+    
     private string GetStatusBadgeClass(string status)
     {
         return status.ToLower() switch

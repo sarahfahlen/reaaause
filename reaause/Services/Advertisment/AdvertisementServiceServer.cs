@@ -38,6 +38,16 @@ namespace reaause.Services.Advertisment
             await httpClient.PutAsync($"api/advertisements/status/{adId}", content);
         }
 
+        public Task UpdateAd(Advertisement ad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteById(string id)
+        {
+            throw new NotImplementedException();
+        }
+
 
     }
 }

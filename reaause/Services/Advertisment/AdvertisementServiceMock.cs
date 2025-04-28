@@ -119,5 +119,19 @@ public class AdvertisementServiceMock : IAdvertisementService
         }
     }
 
+    public async Task UpdateAd(Advertisement ad)
+    {
+        var index = allAds.FindIndex(a => a.Id == ad.Id); //finder det objekt hvor ID matcher, og tjekker dets index (plads)
+        if (index != -1) //hvis index =-1 betyder det at objektet ikke findes - derfor tjekkes der her om der er et match
+        {
+            allAds[index] = ad; //hvis der er match, laves det objekt vi fandt om til det vi sender med (det opdaterede)
+        }
+
+    }
+    public async Task DeleteById(string id)
+    {
+        allAds.RemoveAll(a => a.Id == id);
+    }
+
 
 }
