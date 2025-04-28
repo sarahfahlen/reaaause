@@ -241,15 +241,16 @@
         if (request == null || ad == null)
             return;
         
-        await pService.UpdatePurchaseStatus(request.PurchaseId, "accepted");
+        await pService.UpdatePurchaseRequestStatus(ad.Id, request.PurchaseId, "accepted");
         await aService.UpdateAdStatus(ad.Id, "sold");
         StateHasChanged(); 
         await GetMyAds();
     }
 
+
     private async Task DeclinePurchase(Advertisement ad, Purchase request)
     {
-        await pService.UpdatePurchaseStatus(request.PurchaseId, "declined");
+        await pService.UpdatePurchaseRequestStatus(ad.Id, request.PurchaseId, "declined");
 
         // Fjerner declined request fra listen direkte
         var adInList = myAds.FirstOrDefault(x => x.Id == ad.Id);
@@ -260,10 +261,19 @@
             {
                 req.Status = "declined"; // Opdater lokal kopi
             }
+
+            // ✅ Nu skal vi tjekke om der stadig er pending bud
+            if (!adInList.PurchaseRequests.Any(r => r.Status == "pending"))
+            {
+                // Ingen pending - vi sætter annoncen som "active"
+                await aService.UpdateAdStatus(ad.Id, "active");
+                adInList.Status = "active"; // Opdater lokal kopi så UI viser det
+            }
         }
 
         StateHasChanged(); // Tving UI til at re-render
     }
+
     
     private string GetStatusBadgeClass(string status)
     {
