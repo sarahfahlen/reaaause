@@ -7,6 +7,26 @@
 @page "/market"
 
 <h3>Market</h3>
+    <div class="filter-bar">
+        <input type="text" placeholder="Search ads..." class="search-input" />
+
+        <select class="filter-select">
+            <option>All Categories</option>
+            <option>Furniture</option>
+            <option>Mens clothing</option>
+            <option>Womens clothing</option>
+            <option>Shoes</option>
+            <option>Electronics</option>
+        </select>
+        <div class="price-range">
+            <input type="number" placeholder="Min Price" class="price-input" />
+            <input type="number" placeholder="Max Price" class="price-input" />
+        </div>
+        <div class="filter-checkbox">
+            <input type="checkbox" id="atSchool" />
+            <label for="atSchool">At School?</label>
+        </div>
+    </div>
 
 <div class="item-grid">
     @foreach (var ad in ads)

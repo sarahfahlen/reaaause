@@ -1,4 +1,4 @@
-/* Grid layout */
+/* Grid layout for ads */
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -7,27 +7,26 @@
     min-height: 100vh;
 }
 
-/* Hvert kort */
+/* Ad card */
 .item-card {
-    background-color: rgba(158, 179, 132, 0.6); /* blød grøn tone */
+    background-color: rgba(158, 179, 132, 0.6);
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 600px; /* fast højde */
+    height: 600px;
     width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover-effekt på kort */
 .item-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Billede-container med badge */
+/* Image container inside cards */
 .image-container {
     position: relative;
     width: 100%;
@@ -43,35 +42,29 @@
     border-top-right-radius: 12px;
 }
 
-/* Optional: Lidt zoom på billedet ved hover */
 .item-card:hover .item-image {
     transform: scale(1.02);
 }
 
-/* Info-sektion */
+/* Card info section */
 .item-info {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
-    background-color: rgba(158, 179, 132, 0.6); /* samme som kortet */
+    background-color: rgba(158, 179, 132, 0.6);
 }
 
-/* Tekst styling */
-.item-info p {
+/* Card text styles */
+.item-info p, .item-info strong {
     margin: 0;
     font-size: 0.95rem;
     color: #435334;
     font-weight: 500;
 }
 
-/* Strong tekst */
-.item-info strong {
-    color: #435334;
-}
-
-/* Overskrifter */
+/* Headings */
 h3 {
     text-align: center;
     color: #435334;
@@ -80,14 +73,15 @@ h3 {
     font-weight: 700;
 }
 
-/* Responsivt grid */
+/* Responsive grid for small screens */
 @media (max-width: 600px) {
     .item-grid {
         grid-template-columns: 1fr;
         padding: 1rem;
     }
 }
-/* Badge placeret over billedet */
+
+/* Status badge */
 .badge {
     position: absolute;
     top: 10px;
@@ -102,49 +96,46 @@ h3 {
     z-index: 2;
     background-color: #7e837a;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-
 }
 
-/* Jordfarvede badges */
+/* Badge colors */
 .badge-active, .badge-accepted {
-    background-color: #43533; /* olivengrøn */
+    background-color: #435334;
 }
 
 .badge-reserved, .badge-pending {
-    background-color: #c68642; /* jordorange */
+    background-color: #c68642;
 }
 
 .badge-sold {
-    background-color: #b0413e; /* støvet rød */
+    background-color: #b0413e;
 }
 
 .badge-inactive {
-    background-color: #a89f91; /* varm grå */
+    background-color: #a89f91;
 }
-/* Modal Form Styling */
+
+/* Modal form layout */
 .modal-form {
     padding: 1rem;
 }
 
-/* Grid layout til inputs */
 .modal-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
 
-/* Form grupper */
 .modal-grid .form-group {
     display: flex;
     flex-direction: column;
 }
 
-/* Gør enkelte felter over begge kolonner */
 .modal-grid .full-width {
     grid-column: span 2;
 }
 
-/* Generel styling */
+/* Modal form fields */
 .modal-form label {
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -169,7 +160,7 @@ h3 {
     border-color: #435334;
 }
 
-/* Submit knap */
+/* Form footer and submit button */
 .form-footer {
     margin-top: 1.5rem;
     text-align: right;
@@ -189,9 +180,15 @@ h3 {
 .form-footer .submit-button:hover {
     background-color: #334328;
 }
+
+/* Add new advertisement button */
+.add-button-container {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 2rem 1rem 2rem;
+}
+
 .add-button {
-    align-self: flex-end; /* tryk knappen mod højre */
-    margin-top: auto; /* skubber knappen helt ned */
     background-color: #435334;
     color: white;
     font-weight: 600;
@@ -201,20 +198,94 @@ h3 {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
-    margin-top: 1rem;
 }
 
-/* Hover-effekt på knappen */
 .add-button:hover {
-    background-color: #334328;; /* lidt mørkere olivengrøn */
+    background-color: #334328;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Klikket effekt */
 .add-button:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Edit and Delete buttons */
+.ad-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
 
+.edit-button, .delete-button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.edit-button {
+    background-color: #c68642;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #9a6733;
+}
+
+.delete-button {
+    background-color: #B76E6E;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #8c4d4d;
+}
+
+/* Accept and Decline buttons for purchase requests */
+.request-buttons {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.accept-button, .decline-button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.accept-button {
+    background-color: #334328;
+    color: white;
+}
+
+.accept-button:hover {
+    background-color: #293a1e;
+}
+
+.decline-button {
+    background-color: #d3d3d3;
+    color: #8c4d4d;
+}
+
+.decline-button:hover {
+    background-color: #bbb;
+}
+
+/* Purchase requests list */
+.purchase-requests ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.purchase-requests li {
+    margin-bottom: 0.5rem;
+}

@@ -1,4 +1,4 @@
-/* Grid layout */
+/* Grid layout for ads */
 .item-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -7,27 +7,30 @@
     min-height: 100vh;
 }
 
-/* Hvert kort */
+/* Ad card */
 .item-card {
-    background-color: rgba(158, 179, 132, 0.6); /* blød grøn tone */
+    background-color: rgba(158, 179, 132, 0.6);
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 600px; /* fast højde */
+    height: 600px;
     width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover-effekt på kort */
 .item-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Billede-container med badge */
+.item-card:hover .item-image {
+    transform: scale(1.02);
+}
+
+/* Image inside card */
 .image-container {
     position: relative;
     width: 100%;
@@ -43,51 +46,41 @@
     border-top-right-radius: 12px;
 }
 
-/* Optional: Lidt zoom på billedet ved hover */
-.item-card:hover .item-image {
-    transform: scale(1.02);
-}
-
-/* Info-sektion */
+/* Card information */
 .item-info {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex-grow: 1;
-    background-color: rgba(158, 179, 132, 0.6); /* samme som kortet */
+    background-color: rgba(158, 179, 132, 0.6);
 }
 
-/* Tekst styling */
-.item-info p {
+.item-info p,
+.item-info strong {
     margin: 0;
     font-size: 0.95rem;
     color: #435334;
     font-weight: 500;
 }
 
-/* Strong tekst */
-.item-info strong {
-    color: #435334;
-}
-
-/* Overskrifter */
+/* Section headings */
 h3 {
     text-align: center;
     color: #435334;
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
+    margin: 2rem 0 1.5rem;
     font-weight: 700;
 }
 
-/* Responsivt grid */
+/* Responsive layout for small screens */
 @media (max-width: 600px) {
     .item-grid {
         grid-template-columns: 1fr;
         padding: 1rem;
     }
 }
-/* Badge placeret over billedet */
+
+/* Badge styling */
 .badge {
     position: absolute;
     top: 10px;
@@ -102,22 +95,21 @@ h3 {
     z-index: 2;
     background-color: #7e837a;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-
 }
 
-/* Jordfarvede badges */
+/* Badge colors */
 .badge-active, .badge-accepted {
-    background-color: #435334; /* olivengrøn */
+    background-color: #435334;
 }
 
 .badge-reserved, .badge-pending {
-    background-color: #c68642; /* jordorange */
+    background-color: #c68642;
 }
 
 .badge-sold {
-    background-color: #b0413e; /* støvet rød */
+    background-color: #b0413e;
 }
 
 .badge-inactive {
-    background-color: #a89f91; /* varm grå */
+    background-color: #a89f91;
 }
