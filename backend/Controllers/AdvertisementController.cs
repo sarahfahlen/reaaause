@@ -52,7 +52,7 @@ namespace backend.Controllers
         {
             Console.WriteLine($"Sletter tøj med id {id}");
             adRepo.Remove(id);
-        }
+        } 
 
     }
 }
