@@ -4,9 +4,68 @@
 @inject IAdvertisementService aService
 @inject ILoginService lService
 @page "/myads"
+@using reaause.Component
 
 <h3>My Advertisements</h3>
 
+<!-- Button to add a new advertisement -->
+<button class="add-button" @onclick="OpenAddModal">Add New Advertisement</button>
+
+<!-- Modal Dialog for Adding/Editing Ads -->
+<ModalDialog @ref="addToDialog" Title="@(isEditMode ? "Edit Advertisement" : "Add a New Advertisement")">
+    <EditForm Model="@aItem" OnValidSubmit="@HandleSubmit" class="p-3"> 
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label>Name</label>
+            <InputText @bind-Value="aItem.Name" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <InputText @bind-Value="aItem.Category" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Color</label>
+            <InputText @bind-Value="aItem.Color" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Condition</label>
+            <InputSelect @bind-Value="aItem.Condition" class="form-control">
+                <option value="">Choose condition</option>
+                <option value="Ny">New</option>
+                <option value="God">Good</option>
+                <option value="Slidt">Used</option>
+            </InputSelect>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <InputTextArea @bind-Value="aItem.Description" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Price (DKK)</label>
+            <InputNumber @bind-Value="aItem.Price" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Picture URL</label>
+            <InputText @bind-Value="aItem.Picture" class="form-control" />
+        </div>
+
+        <div class="form-footer">
+            <button type="submit" class="submit-button">
+                @((isEditMode ? "Save Changes" : "Add Advertisement"))
+            </button>
+        </div>
+     </EditForm> 
+</ModalDialog>
+
+<!-- Cards for each ad -->
 <div class="item-grid">
     @foreach (var ad in myAds)
     {
@@ -31,7 +90,6 @@
                     <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
                     <div><span>Location:</span> @ad.Location?.Name</div>
                 </div>
-
                 <p class="ad-description">@ad.Description</p>
             </div>
         </div>
@@ -41,6 +99,9 @@
 @code {
     private List<Advertisement> myAds = new();
     private User? loggedIn;
+    private ModalDialog? addToDialog;
+    private Advertisement aItem = new();
+    private bool isEditMode = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,6 +118,21 @@
     {
         myAds = await aService.GetMyAds(loggedIn.Id);
     }
+
+    private void OpenAddModal()
+    {
+        isEditMode = false;
+        aItem = new Advertisement();
+        addToDialog?.Open();
+    }
+
+    private async Task HandleSubmit()
+    {
+            await aService.AddAd(aItem);
+        addToDialog?.Close();
+        await GetMyAds();
+    } 
+
     private string GetStatusBadgeClass(string status)
     {
         return status.ToLower() switch
@@ -68,5 +144,4 @@
             _ => "badge-default"
         };
     }
-
 }

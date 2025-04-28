@@ -103,5 +103,11 @@ public class AdvertisementServiceMock : IAdvertisementService
         var myAds = allAds.Where(ad => ad.Seller.UserId == userId).ToList();
         return Task.FromResult(myAds);
     }
+    
+    public async Task AddAd(Advertisement ad)
+    {
+        throw new NotImplementedException();
+    }
+    
 
 }

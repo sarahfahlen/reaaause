@@ -19,7 +19,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddSingleton<IAdvertisementService, AdvertisementServiceMock>();
 
-builder.Services.AddScoped<ILoginService, LoginServiceServer>();
+builder.Services.AddScoped<ILoginService, LoginServiceServer>(); 
 
 builder.Services.AddScoped<IPurchaseService, PurchaseServiceMock>();
 
