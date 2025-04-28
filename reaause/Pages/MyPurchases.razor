@@ -34,7 +34,11 @@
                         <div><span>Price:</span> @ad.Price DKK</div>
                         <div><span>Condition:</span> @ad.Condition</div>
                         <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
-                        <div><span>Location:</span> @ad.Location?.Name</div>
+
+                        @if (ad.AtSchool)
+                        {
+                            <div><span>Location:</span> @ad.Location?.Name: @ad.Location?.RoomNumber</div>
+                        }
                     </div>
 
                     <p class="ad-description">@ad.Description</p>

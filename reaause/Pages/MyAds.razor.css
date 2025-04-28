@@ -16,9 +16,10 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 600px;
-    width: 100%;
+    width: 98%;
+    min-height: 98px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-height: 671px;
 }
 
 .item-card:hover {
@@ -289,3 +290,80 @@ h3 {
 .purchase-requests li {
     margin-bottom: 0.5rem;
 }
+.checkbox-input {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+/* Switch wrapper */
+.custom-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    margin-top: 0.5rem;
+}
+
+/* Hide the default checkbox */
+.custom-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The background of the switch */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 28px;
+    transition: 0.4s;
+}
+
+/* The small circle inside the switch */
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+/* Background when checkbox is checked */
+.custom-switch input:checked + .slider {
+    background-color: #435334; /* Your green color */
+}
+
+/* Move the slider circle when checked */
+.custom-switch input:checked + .slider:before {
+    transform: translateX(22px);
+}
+/* Add single pulse animation when checked */
+.custom-switch input:checked + .slider {
+    background-color: #435334;
+    animation: pulse 0.6s ease;
+}
+
+/* Define the pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(67, 83, 52, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(67, 83, 52, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(67, 83, 52, 0);
+    }
+}
+
+

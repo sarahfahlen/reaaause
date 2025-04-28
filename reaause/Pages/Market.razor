@@ -24,7 +24,14 @@
         <input type="number" placeholder="Min Price" class="price-input" @bind="minPrice" @bind:event="oninput"/>
         <input type="number" placeholder="Max Price" class="price-input" @bind="maxPrice" @bind:event="oninput"/>
     </div>
-
+    <select class="filter-select" @bind="selectedLocation">
+        <option value="">All Locations</option>
+        @foreach (var location in LocationCounts)
+        {
+            <option value="@location.Key">@location.Key (@location.Value)</option>
+        }
+    </select>
+    
     <div class="filter-checkbox">
         <input type="checkbox" id="atSchool" @bind="atSchoolOnly" />
         <label for="atSchool">At School?</label>
@@ -53,7 +60,12 @@
                     <div><span>Price:</span> @ad.Price DKK</div>
                     <div><span>Condition:</span> @ad.Condition</div>
                     <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
-                    <div><span>Location:</span> @ad.Location?.Name</div>
+
+                    @if (ad.AtSchool)
+                    {
+                        <div><span>Location:</span> @ad.Location?.Name: @ad.Location?.RoomNumber</div>
+                    }
+
                     <div><span>Owner:</span> @ad.Seller?.Name</div>
                 </div>
 
@@ -88,14 +100,17 @@
 @code {
     private List<Advertisement> ads = new();
     private User? loggedIn;
-    private string? selectedAdId; 
-    private double bidAmount; 
-    private bool showSuccessMessage = false; 
+    private string? selectedAdId;
+    private double bidAmount;
+    private bool showSuccessMessage = false;
 
-    private string searchTerm = string.Empty; 
-    private string selectedCategory = "All Categories"; 
+    private string searchTerm = string.Empty;
+    private string selectedCategory = "All Categories";
     private int? minPrice;
     private int? maxPrice;
+    private Dictionary<string, int> locationCounts = new();
+    private string selectedLocation = "";
+
     private bool atSchoolOnly = false;
 
     protected override async Task OnInitializedAsync()
@@ -106,6 +121,7 @@
             navManager.NavigateTo("login/market");
             return;
         }
+
         await GetAll();
     }
 
@@ -113,7 +129,19 @@
     {
         ads = await aService.GetAllAdvertisements();
     }
-    
+
+    private Dictionary<string, int> LocationCounts => ads
+        .Where(ad => ad.Status != "sold")
+        .Where(ad => string.IsNullOrWhiteSpace(searchTerm) || ad.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+        .Where(ad => selectedCategory == "All Categories" || ad.Category == selectedCategory)
+        .Where(ad => !minPrice.HasValue || ad.Price >= minPrice)
+        .Where(ad => !maxPrice.HasValue || ad.Price <= maxPrice)
+        .Where(ad => !atSchoolOnly || ad.AtSchool)
+        .Where(ad => ad.Location != null && !string.IsNullOrWhiteSpace(ad.Location.Name))
+        .GroupBy(ad => ad.Location.Name)
+        .ToDictionary(g => g.Key, g => g.Count());
+
+
     private string GetStatusBadgeClass(string status)
     {
         return status.ToLower() switch
@@ -125,14 +153,14 @@
             _ => "badge-default"
         };
     }
-    
+
     private void OpenBidPopup(string adId)
     {
         selectedAdId = adId;
         bidAmount = 0;
         showSuccessMessage = false;
     }
-    
+
     private async Task SubmitBid(Advertisement ad)
     {
         if (loggedIn == null)
@@ -165,9 +193,9 @@
 
     private void CancelBid()
     {
-        selectedAdId = null; 
-        bidAmount = 0;  
-        showSuccessMessage = false; 
+        selectedAdId = null;
+        bidAmount = 0;
+        showSuccessMessage = false;
     }
 
     private IEnumerable<Advertisement> FilteredAds => ads
@@ -176,5 +204,7 @@
         .Where(ad => selectedCategory == "All Categories" || ad.Category == selectedCategory)
         .Where(ad => !minPrice.HasValue || ad.Price >= minPrice)
         .Where(ad => !maxPrice.HasValue || ad.Price <= maxPrice)
-        .Where(ad => !atSchoolOnly || ad.AtSchool);
+        .Where(ad => !atSchoolOnly || ad.AtSchool)
+        .Where(ad => string.IsNullOrWhiteSpace(selectedLocation) || (ad.Location != null && ad.Location.Name == selectedLocation));
+
 }
