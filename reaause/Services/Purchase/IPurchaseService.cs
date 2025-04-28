@@ -2,7 +2,8 @@ using shared;
 
 public interface IPurchaseService
 {
-    Task<List<(Advertisement, Purchase)>> GetMyPurchase(string loggedInUserId);
+    Task<List<PurchaseWithAd>> GetMyPurchase(string loggedInUserEmail);
+
 
     Task AddPurchase(string adId, Purchase purchase);
 }

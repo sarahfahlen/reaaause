@@ -1,6 +1,10 @@
-namespace backend.Repository;
+using shared;
 
-public class IPurchaseRepository
+namespace backend.Repository
 {
-    
+    public interface IPurchaseRepository
+    {
+        Task<List<PurchaseWithAd>> GetPurchasesByUserEmail(string userEmail);
+
+    }
 }

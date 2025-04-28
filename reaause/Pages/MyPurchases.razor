@@ -1,3 +1,4 @@
+@using reaause.Services.Advertisment
 @using shared
 @inject NavigationManager navManager
 @inject IPurchaseService pService
@@ -9,10 +10,10 @@
 @if (myPurchases.Any())
 {
     <div class="item-grid">
-        @foreach (var tuple in myPurchases)
+        @foreach (var item in myPurchases)
         {
-            var ad = tuple.Item1;
-            var purchase = tuple.Item2;
+            var ad = item.Advertisement;
+            var purchase = item.Purchase;
 
             <div class="item-card">
                 <div class="image-container">
@@ -35,7 +36,7 @@
                         <div><span>At School:</span> @(ad.AtSchool ? "Yes" : "No")</div>
                         <div><span>Location:</span> @ad.Location?.Name</div>
                     </div>
-                    
+
                     <p class="ad-description">@ad.Description</p>
                     <p><strong>My Bid:</strong> @purchase.Bid DKK</p>
                     <p><strong>Purchase Status:</strong> @purchase.Status</p>
@@ -48,10 +49,12 @@ else
 {
     <p>You have no active or pending purchases.</p>
 }
+
 @code {
-    private List<(Advertisement, Purchase)> myPurchases = new();
+    private List<PurchaseWithAd> myPurchases = new();
+
     private User? loggedIn;
-    
+
     protected override async Task OnInitializedAsync()
     {
         loggedIn = await lService.GetUserLoggedIn();
@@ -61,15 +64,17 @@ else
             return;
         }
 
-        myPurchases = await pService.GetMyPurchase(loggedIn.Id);
+        myPurchases = await pService.GetMyPurchase(loggedIn.Email);
+
     }
-    
+
     private string GetStatusBadgeClass(string status)
     {
         return status.ToLower() switch
         {
             "pending" => "badge-pending",
             "accepted" => "badge-accepted",
+            "declined" => "badge-declined",
             _ => "badge-default"
         };
     }

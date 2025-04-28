@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using reaause;
 using reaause.Services.Advertisment;
 using reaause.Services.Login;
+using reaause.Services.Purchase;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,6 +22,6 @@ builder.Services.AddScoped<IAdvertisementService, AdvertisementServiceServer>();
 
 builder.Services.AddScoped<ILoginService, LoginServiceServer>(); 
 
-builder.Services.AddScoped<IPurchaseService, PurchaseServiceMock>();
+builder.Services.AddScoped<IPurchaseService, PurchaseServiceServer>();
 
 await builder.Build().RunAsync();
