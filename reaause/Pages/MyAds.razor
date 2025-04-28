@@ -3,6 +3,7 @@
 @inject NavigationManager navManager
 @inject IAdvertisementService aService
 @inject ILoginService lService
+@inject IPurchaseService pService
 @page "/myads"
 @using reaause.Component
 
@@ -88,7 +89,7 @@
 
 <!-- Cards for each ad -->
 <div class="item-grid">
-    @foreach (var ad in myAds)
+    @foreach (var ad in myAds.Where(ad => ad.Status != "sold"))
     {
         <div class="item-card">
             <div class="image-container">
@@ -112,6 +113,25 @@
                     <div><span>Location:</span> @ad.Location?.Name</div>
                 </div>
                 <p class="ad-description">@ad.Description</p>
+                @if (ad.PurchaseRequests != null && ad.PurchaseRequests.Any(p => p.Status == "pending"))
+                {
+                    <div class="purchase-requests">
+                        <h4>Purchase Requests</h4>
+                        <ul>
+                            @foreach (var request in ad.PurchaseRequests.Where(p => p.Status == "pending"))
+                            {
+                                <li>
+                                    <strong>@request.Buyer.Name</strong> bids <strong>@request.Bid DKK</strong>
+                                    <div class="request-buttons">
+                                        <button class="accept-button" @onclick="() => AcceptPurchase(ad, request)">Accept</button>
+                                        <button class="decline-button" @onclick="() => DeclinePurchase(ad, request)">Decline</button>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+
             </div>
         </div>
     }
@@ -174,6 +194,38 @@
             aItem.Location = new Facility();
         }
     }
+    
+    private async Task AcceptPurchase(Advertisement ad, Purchase request)
+    {
+        if (request == null || ad == null)
+            return;
+
+        // 1. Opdater purchase status til "accepted"
+        await pService.UpdatePurchaseStatus(request.PurchaseId, "accepted");
+
+        // 2. Opdater advertisement status til "sold"
+        await aService.UpdateAdStatus(ad.Id, "sold");
+
+        // 3. Genindlæs mine annoncer
+        await GetMyAds();
+    }
+
+    private async Task DeclinePurchase(Advertisement ad, Purchase request)
+    {
+        if (request == null || ad == null)
+            return;
+
+        // 1. Opdater purchase status til "declined"
+        await pService.UpdatePurchaseStatus(request.PurchaseId, "declined");
+
+        // 2. Opdater advertisement status tilbage til "active"
+        await aService.UpdateAdStatus(ad.Id, "active");
+
+        // 3. Genindlæs mine annoncer
+        await GetMyAds();
+    }
+
+
 
 
     private string GetStatusBadgeClass(string status)

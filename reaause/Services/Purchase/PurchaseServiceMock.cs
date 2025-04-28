@@ -45,4 +45,21 @@ public class PurchaseServiceMock : IPurchaseService
             await adService.UpdateAdStatus(adId, "reserved");
         }
     }
+    public async Task UpdatePurchaseStatus(string purchaseId, string newStatus)
+    {
+        var adService = new AdvertisementServiceMock();
+        var allAds = await adService.GetAllAdvertisements();
+
+        foreach (var ad in allAds)
+        {
+            var purchase = ad.PurchaseRequests?.FirstOrDefault(p => p.PurchaseId == purchaseId);
+            if (purchase != null)
+            {
+                purchase.Status = newStatus;
+                return;
+            }
+        }
+    }
+
+
 }
