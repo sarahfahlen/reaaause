@@ -1,6 +1,7 @@
 @page "/mypurchases"
 @using reaause.Services.Advertisment
 @using shared
+@using reaause.Component
 @inject NavigationManager navManager
 @inject IPurchaseService pService
 @inject ILoginService lService
@@ -54,7 +55,7 @@
 
                     @if (purchase.Status == "pending")
                     {
-                        <button class="decline-button" @onclick="() => DeclineBid(ad, purchase)">
+                        <button class="decline-button" @onclick="() => AskCancelBid(ad, purchase)">
                             Cancel bid
                         </button>
                     }
@@ -67,11 +68,23 @@ else
 {
     <p>You have no active or pending purchases.</p>
 }
+<ModalDialog @ref="deleteConfirmDialog" Title="Confirm Cancellation">
+    <div class="modal-content">
+        <p>Are you sure you want to cancel your bid?</p>
+        <div class="form-footer">
+            <button class="cancel-button" @onclick="CancelDelete">Cancel</button>
+            <button class="delete-button" @onclick="ConfirmDelete">Yes, cancel bid</button>
+        </div>
+    </div>
+</ModalDialog>
 
 @code {
     private List<PurchaseWithAd> myPurchases = new();
     private User? loggedIn;
     private string successMessage = "";
+    private ModalDialog? deleteConfirmDialog;
+    private Advertisement? adToCancel;
+    private Purchase? purchaseToCancel;
 
     protected override async Task OnInitializedAsync()
     {
@@ -81,31 +94,49 @@ else
             navManager.NavigateTo("login/mypurchases");
             return;
         }
-
         myPurchases = await pService.GetMyPurchase(loggedIn.Email);
     }
-
-    private async Task DeclineBid(Advertisement ad, Purchase purchase)
-{
-    if (purchase.Status != "pending")
-        return;
-
-    await pService.UpdatePurchaseRequestStatus(ad.Id, purchase.PurchaseId, "declined");
-
-    if (ad.PurchaseRequests != null &&
-        !ad.PurchaseRequests.Any(r => r.Status == "pending" && r.PurchaseId != purchase.PurchaseId))
+    
+    private void AskCancelBid(Advertisement ad, Purchase purchase)
     {
-        await aService.UpdateAdStatus(ad.Id, "active");
+        adToCancel = ad;
+        purchaseToCancel = purchase;
+        deleteConfirmDialog?.Open();
+    }
+    
+    private void CancelDelete()
+    {
+        adToCancel = null;
+        purchaseToCancel = null;
+        deleteConfirmDialog?.Close();
     }
 
-    myPurchases = await pService.GetMyPurchase(loggedIn.Email);
 
-    successMessage = "Your bid has been canceled.";
-    StateHasChanged();
-    await Task.Delay(4000);
-    successMessage = "";
-    StateHasChanged();
-}
+    private async Task ConfirmDelete()
+    {
+        if (adToCancel != null && purchaseToCancel != null)
+        {
+            await pService.UpdatePurchaseRequestStatus(adToCancel.Id, purchaseToCancel.PurchaseId, "declined");
+
+            if (adToCancel.PurchaseRequests != null &&
+                !adToCancel.PurchaseRequests.Any(r => r.Status == "pending" && r.PurchaseId != purchaseToCancel.PurchaseId))
+            {
+                await aService.UpdateAdStatus(adToCancel.Id, "active");
+            }
+
+            successMessage = "Your bid has been canceled.";
+            adToCancel = null;
+            purchaseToCancel = null;
+        }
+
+        deleteConfirmDialog?.Close();
+        myPurchases = await pService.GetMyPurchase(loggedIn.Email);
+        StateHasChanged();
+        await Task.Delay(4000);
+        successMessage = "";
+        StateHasChanged();
+    }
+    
 
     private string GetStatusBadgeClass(string status)
     {
