@@ -86,16 +86,17 @@
                         </div>
                     </div>  
                 }
-                @if (showSuccessMessage && selectedAdId == ad.Id)
-                {
-                    <div class="success-message">
-                        Your bid has been submitted!
-                    </div>
-                }
             </div>
         </div>
+        @if (showSuccessMessage && selectedAdId == ad.Id)
+        {
+            <div class="alert-success">
+                Your bid has been submitted!
+            </div>
+        }
     }
 </div>
+
 
 @code {
     private List<Advertisement> ads = new();
