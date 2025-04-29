@@ -179,12 +179,11 @@
                 Email = loggedIn.Email
             }
         };
-
+        showSuccessMessage = true;
         await pService.AddPurchase(ad.Id, newPurchase);
         await aService.UpdateAdStatus(ad.Id, "reserved");
         ads = await aService.GetAllAdvertisements();
-
-        showSuccessMessage = true;
+        
         await Task.Delay(5000);
         showSuccessMessage = false;
         selectedAdId = null;
