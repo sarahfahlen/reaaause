@@ -29,6 +29,8 @@ else
                     <div class="day-hours">Sunday: @facility.OpeningHours.Sunday</div>
 
                     <div class="staff-member">Staffmember: @GetStaffName(facility.StaffUserId)</div>
+                    <div class="staff-member">Phone number: @GetStaffPhoneNumber(facility.StaffUserId)</div>
+
                 </div>
             </div>
         }
@@ -58,4 +60,14 @@ else
         var staff = staffUsers.FirstOrDefault(u => u.Id == staffUserId);
         return staff != null ? staff.Name : "No staffmember";
     }
+    
+    private string GetStaffPhoneNumber(string? staffUserId)
+    {
+        if (string.IsNullOrEmpty(staffUserId))
+            return "No phone number";
+
+        var staff = staffUsers.FirstOrDefault(u => u.Id == staffUserId);
+        return staff != null ? staff.Phone.ToString() ?? "No phone number" : "No phone number";
+    }
+
 }
