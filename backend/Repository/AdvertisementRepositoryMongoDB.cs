@@ -85,7 +85,8 @@ namespace backend.Repository
                 .Set(x => x.Price, ad.Price)
                 .Set(x => x.AtSchool, ad.AtSchool)
                 .Set(x => x.Description, ad.Description)
-                .Set(x => x.Picture, ad.Picture);
+                .Set(x => x.Picture, ad.Picture)
+                .Set(x => x.Location, ad.Location);
             adCollection.UpdateOne(x => x.Id == ad.Id, updateDef);
         }
     }

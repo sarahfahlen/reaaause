@@ -221,7 +221,7 @@
 
     private async Task HandleSubmit()
     {
-        if (aItem.AtSchool && string.IsNullOrEmpty(aItem.Location?.Name) && !string.IsNullOrEmpty(selectedFacilityName))
+        if (aItem.AtSchool && !string.IsNullOrEmpty(selectedFacilityName))
         {
             var selectedFacility = facilities.FirstOrDefault(f => f.Name == selectedFacilityName);
             if (selectedFacility != null)
@@ -257,9 +257,38 @@
     private async Task Update(Advertisement ad)
     {
         isEditMode = true;
-        aItem = ad;
 
-        
+        // LAV EN KOPI i stedet for reference
+        aItem = new Advertisement
+        {
+            Id = ad.Id,
+            Name = ad.Name,
+            Category = ad.Category,
+            Color = ad.Color,
+            Condition = ad.Condition,
+            Price = ad.Price,
+            AtSchool = ad.AtSchool,
+            Description = ad.Description,
+            Picture = ad.Picture,
+            Status = ad.Status,
+            Seller = ad.Seller,
+            Location = ad.Location != null ? new Facility
+            {
+                Id = ad.Location.Id,
+                Name = ad.Location.Name,
+                RoomNumber = ad.Location.RoomNumber,
+                OpeningHours = ad.Location.OpeningHours,
+                StaffUserId = ad.Location.StaffUserId
+            } : null,
+            PurchaseRequests = ad.PurchaseRequests?.Select(p => new Purchase
+            {
+                PurchaseId = p.PurchaseId,
+                Bid = p.Bid,
+                Buyer = p.Buyer,
+                Status = p.Status
+            }).ToList()
+        };
+
         if (ad.Location != null)
         {
             selectedFacilityName = ad.Location.Name;
@@ -268,9 +297,10 @@
         {
             selectedFacilityName = "";
         }
-    
+
         addToDialog.Open();
     }
+
 
 
 
