@@ -368,5 +368,10 @@ h3 {
         box-shadow: 0 0 0 0 rgba(67, 83, 52, 0);
     }
 }
+.alert-success {
+    background-color: #a3a876; /* Din egen lysegrøn fx */
+    color: #fff5e5; /* Tekstfarve */
+    border: 1px solid #858a5c;
+}
 
 
