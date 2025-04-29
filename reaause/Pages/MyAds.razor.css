@@ -370,7 +370,7 @@ h3 {
 }
 .alert-success {
     background-color: #a3a876; /* Din egen lysegrøn fx */
-    color: #fff5e5; /* Tekstfarve */
+    color: white; /* Tekstfarve */
     border: 1px solid #858a5c;
 }
 
