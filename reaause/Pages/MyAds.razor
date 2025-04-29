@@ -171,6 +171,15 @@
         </div>
     }
 </div>
+<ModalDialog @ref="deleteConfirmDialog" Title="Confirm Deletion">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this advertisement?</p>
+        <div class="form-footer">
+            <button class="cancel-button" @onclick="CancelDelete">Cancel</button>
+            <button class="delete-button" @onclick="ConfirmDelete">Yes, Delete</button>
+        </div>
+    </div>
+</ModalDialog>
 
 @code {
     private List<Advertisement> myAds = new();
@@ -184,7 +193,10 @@
     private string successMessage = "";
     private string selectedFacilityId = "";
     private string selectedFacilityName = "";
-
+    private ModalDialog? deleteConfirmDialog;
+    private Advertisement? adToDelete;
+    
+    
     protected override async Task OnInitializedAsync()
     {
         loggedIn = await lService.GetUserLoggedIn();
@@ -304,14 +316,27 @@
         addToDialog.Open();
     }
 
-
-
-
-
-    private async Task Delete(Advertisement ad)
+    private void Delete(Advertisement ad)
     {
-        await aService.DeleteById(ad.Id);
-        await GetMyAds();
+        adToDelete = ad;
+        deleteConfirmDialog?.Open();
+    }
+
+    private void CancelDelete()
+    {
+        adToDelete = null;
+        deleteConfirmDialog?.Close();
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (adToDelete != null)
+        {
+            await aService.DeleteById(adToDelete.Id);
+            await GetMyAds();
+            adToDelete = null;
+        }
+        deleteConfirmDialog?.Close();
     }
 
     private void ToggleAtSchool(ChangeEventArgs e)
