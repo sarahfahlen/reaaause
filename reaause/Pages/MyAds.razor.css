@@ -19,7 +19,8 @@
     width: 98%;
     min-height: 98px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    max-height: 671px;
+    height: 800px; 
+    max-height: 800px;
 }
 
 .item-card:hover {
@@ -52,8 +53,10 @@
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    justify-content: space-between;
     background-color: rgba(158, 179, 132, 0.6);
 }
 

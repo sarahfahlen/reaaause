@@ -80,13 +80,16 @@
             {
                 <div class="form-group">
                     <label for="schoolLocation">School Location:</label>
-                    <InputSelect id="schoolLocation" class="form-control" @bind-Value="selectedFacilityId" @onchange="OnFacilitySelected" TItem="string">
+                    <InputSelect id="schoolLocation"
+                                 class="form-control"
+                                 @bind-Value="selectedFacilityName" @onchange="OnFacilitySelectedByName">
                         <option value="">-- Select a facility --</option>
                         @foreach (var facility in facilities)
                         {
-                            <option value="@facility.Id">@facility.Name (@facility.RoomNumber)</option>
+                            <option value="@facility.Name">@facility.Name (@facility.RoomNumber)</option>
                         }
                     </InputSelect>
+
                 </div>
             }
 
@@ -149,7 +152,7 @@
                 @if ((ad.Status == "active" || ad.Status == "reserved") && ad.PurchaseRequests != null && ad.PurchaseRequests.Any(p => p.Status == "pending"))
                 {
                     <div class="purchase-requests">
-                        <h4>Purchase Requests</h4>
+                        <h3>Purchase Requests</h3>
                         <ul>
                             @foreach (var request in ad.PurchaseRequests.Where(p => p.Status == "pending"))
                             {
@@ -180,6 +183,7 @@
     private Advertisement aItem = new();
     private string successMessage = "";
     private string selectedFacilityId = "";
+    private string selectedFacilityName = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -216,37 +220,38 @@
     }
 
     private async Task HandleSubmit()
-{
-    if (aItem.AtSchool && string.IsNullOrEmpty(aItem.Location?.Id) && !string.IsNullOrEmpty(selectedFacilityId))
     {
-        var selectedFacility = facilities.FirstOrDefault(f => f.Id == selectedFacilityId);
-        if (selectedFacility != null)
+        if (aItem.AtSchool && string.IsNullOrEmpty(aItem.Location?.Name) && !string.IsNullOrEmpty(selectedFacilityName))
         {
-            aItem.Location = new Facility
+            var selectedFacility = facilities.FirstOrDefault(f => f.Name == selectedFacilityName);
+            if (selectedFacility != null)
             {
-                Id = selectedFacility.Id,
-                Name = selectedFacility.Name,
-                RoomNumber = selectedFacility.RoomNumber,
-                OpeningHours = selectedFacility.OpeningHours,
-                StaffUserId = selectedFacility.StaffUserId
-            };
+                aItem.Location = new Facility
+                {
+                    Id = selectedFacility.Id,
+                    Name = selectedFacility.Name,
+                    RoomNumber = selectedFacility.RoomNumber,
+                    OpeningHours = selectedFacility.OpeningHours,
+                    StaffUserId = selectedFacility.StaffUserId
+                };
+            }
         }
+
+        if (isEditMode)
+        {
+            await aService.UpdateAd(aItem);
+        }
+        else
+        {
+            await aService.AddAd(aItem);
+        }
+
+        addToDialog?.Close();
+        await GetMyAds();
+        successMessage = "Advertisement saved!";
+        StateHasChanged();
     }
 
-    if (isEditMode)
-    {
-        await aService.UpdateAd(aItem);
-    }
-    else
-    {
-        await aService.AddAd(aItem);
-    }
-
-    addToDialog?.Close();
-    await GetMyAds();
-    successMessage = "Advertisement saved!";
-    StateHasChanged();
-}
 
 
     private async Task Update(Advertisement ad)
@@ -257,13 +262,13 @@
         
         if (ad.Location != null)
         {
-            selectedFacilityId = ad.Location.Id; 
+            selectedFacilityName = ad.Location.Name;
         }
         else
         {
-            selectedFacilityId = "";
+            selectedFacilityName = "";
         }
-
+    
         addToDialog.Open();
     }
 
@@ -291,11 +296,11 @@
         }
     }
 
-    private void OnFacilitySelected(ChangeEventArgs e)
+    private void OnFacilitySelectedByName(ChangeEventArgs e)
     {
-        selectedFacilityId = e.Value?.ToString() ?? "";
+        selectedFacilityName = e.Value?.ToString() ?? "";
 
-        var selectedFacility = facilities.FirstOrDefault(f => f.Id == selectedFacilityId);
+        var selectedFacility = facilities.FirstOrDefault(f => f.Name == selectedFacilityName);
         if (selectedFacility != null)
         {
             aItem.Location = new Facility

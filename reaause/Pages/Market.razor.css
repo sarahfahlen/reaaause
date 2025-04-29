@@ -81,7 +81,6 @@
 }
 
 /* Ad card */
-/* Ad card */
 .item-card {
     background-color: rgba(158, 179, 132, 0.6);
     border-radius: 12px;
@@ -90,23 +89,23 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    width: 100%;
-    min-height: 600px; 
+    width: 98%;
+    min-height: 98px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 800px;
+    max-height: 800px;
 }
-
 
 .item-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Image inside card */
+/* Image container inside cards */
 .image-container {
     position: relative;
     width: 100%;
     height: 250px;
-    flex-shrink: 0;
 }
 
 .item-image {
@@ -122,13 +121,15 @@
     transform: scale(1.02);
 }
 
-/* Ad information section */
+/* Card info section */
 .item-info {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    justify-content: space-between;
     background-color: rgba(158, 179, 132, 0.6);
 }
 
