@@ -71,9 +71,5 @@ public class PurchaseServiceMock : IPurchaseService
     {
         throw new NotImplementedException();
     }
-
-    public Task RemoveMyPurchase(string adId, string purchaseId)
-    {
-        throw new NotImplementedException();
-    }
+    
 }
