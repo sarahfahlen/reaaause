@@ -250,6 +250,9 @@
         await GetMyAds();
         successMessage = "Advertisement saved!";
         StateHasChanged();
+        await Task.Delay(4000); // Vent 4 sekunder
+        successMessage = "";
+        StateHasChanged();
     }
 
 
