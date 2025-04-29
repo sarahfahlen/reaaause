@@ -157,10 +157,16 @@
 
     private void OpenBidPopup(string adId)
     {
-        selectedAdId = adId;
-        bidAmount = 0;
+        var selectedAd = ads.FirstOrDefault(a => a.Id == adId);
+        if (selectedAd != null)
+        {
+            selectedAdId = adId;
+            bidAmount = selectedAd.Price;
+        }
+
         showSuccessMessage = false;
     }
+
 
     private async Task SubmitBid(Advertisement ad)
     {
@@ -185,7 +191,7 @@
         await aService.UpdateAdStatus(ad.Id, "reserved");
         ads = await aService.GetAllAdvertisements();
         
-        await Task.Delay(5000);
+        await Task.Delay(2000);
         showSuccessMessage = false;
         selectedAdId = null;
         StateHasChanged();

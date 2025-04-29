@@ -1,12 +1,18 @@
+@page "/mypurchases"
 @using reaause.Services.Advertisment
 @using shared
 @inject NavigationManager navManager
 @inject IPurchaseService pService
 @inject ILoginService lService
-@page "/mypurchases"
+@inject IAdvertisementService aService
 
 <h3>My Purchases</h3>
-
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
 @if (myPurchases.Any())
 {
     <div class="item-grid">
@@ -39,10 +45,19 @@
                         {
                             <div><span>Location:</span> @ad.Location?.Name: @ad.Location?.RoomNumber</div>
                         }
+
+                        <div><span>Seller:</span> @ad.Seller?.Name</div>
                     </div>
-                    <div><span>Seller:</span> @ad.Seller</div>
+
                     <p class="ad-description">@ad.Description</p>
                     <p><strong>My Bid:</strong> @purchase.Bid DKK</p>
+
+                    @if (purchase.Status == "pending")
+                    {
+                        <button class="decline-button" @onclick="() => DeclineBid(ad, purchase)">
+                            Decline bid
+                        </button>
+                    }
                 </div>
             </div>
         }
@@ -55,8 +70,8 @@ else
 
 @code {
     private List<PurchaseWithAd> myPurchases = new();
-
     private User? loggedIn;
+    private string successMessage = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,8 +83,29 @@ else
         }
 
         myPurchases = await pService.GetMyPurchase(loggedIn.Email);
-
     }
+
+    private async Task DeclineBid(Advertisement ad, Purchase purchase)
+{
+    if (purchase.Status != "pending")
+        return;
+
+    await pService.UpdatePurchaseRequestStatus(ad.Id, purchase.PurchaseId, "declined");
+
+    if (ad.PurchaseRequests != null &&
+        !ad.PurchaseRequests.Any(r => r.Status == "pending" && r.PurchaseId != purchase.PurchaseId))
+    {
+        await aService.UpdateAdStatus(ad.Id, "active");
+    }
+
+    myPurchases = await pService.GetMyPurchase(loggedIn.Email);
+
+    successMessage = "Your bid has been canceled.";
+    StateHasChanged();
+    await Task.Delay(4000);
+    successMessage = "";
+    StateHasChanged();
+}
 
     private string GetStatusBadgeClass(string status)
     {

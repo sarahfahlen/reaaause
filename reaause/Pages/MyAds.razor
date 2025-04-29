@@ -17,6 +17,12 @@
         @successMessage
     </div>
 }
+@if (!string.IsNullOrEmpty(successMessage1))
+{
+    <div class="alert alert-success1">
+        @successMessage1
+    </div>
+}
 
 <!-- Button to add a new advertisement -->
 <div class="add-button-container">
@@ -191,6 +197,7 @@
     private bool isEditMode = false;
     private Advertisement aItem = new();
     private string successMessage = "";
+    private string successMessage1 = "";
     private string selectedFacilityId = "";
     private string selectedFacilityName = "";
     private ModalDialog? deleteConfirmDialog;
@@ -320,6 +327,7 @@
     {
         adToDelete = ad;
         deleteConfirmDialog?.Open();
+        
     }
 
     private void CancelDelete()
@@ -337,6 +345,12 @@
             adToDelete = null;
         }
         deleteConfirmDialog?.Close();
+        await GetMyAds();
+        successMessage1 = "Advertisement deleted!";
+        StateHasChanged();
+        await Task.Delay(4000); // Vent 4 sekunder
+        successMessage1 = "";
+        StateHasChanged();
     }
 
     private void ToggleAtSchool(ChangeEventArgs e)
@@ -404,6 +418,7 @@
         }
         StateHasChanged();
     }
+   
 
     private string GetStatusBadgeClass(string status)
     {

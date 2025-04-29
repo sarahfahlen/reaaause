@@ -75,6 +75,7 @@ namespace backend.Repository
             var deleteResult = adCollection
                 .DeleteOne(Builders<Advertisement>.Filter.Where(a => a.Id == id));
         }
+
         public void UpdateAd(Advertisement ad)
         {
             var updateDef = Builders<Advertisement>.Update

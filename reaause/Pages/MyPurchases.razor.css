@@ -117,3 +117,43 @@ h3 {
 .badge-inactive {
     background-color: #a89f91;
 }
+.decline-button {
+    align-self: flex-end;
+    background-color: #c68642;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.decline-button:hover {
+    background-color: #9a6733;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.decline-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.alert-success {
+    background-color: #f5d76e;      
+    color: #5c4b00;                 
+    border: 1px solid #e0b800;       
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    z-index: 9999;
+    width: auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeout 0.5s ease-in-out 3.5s forwards;
+}
+
